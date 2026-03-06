@@ -1,6 +1,13 @@
 """
-FastAPI server for the 4-bit ALU Simulator.
+Vercel Serverless Function – 4-bit ALU Simulator API
+Deployed as a Python serverless function on Vercel.
 """
+
+import sys
+import os
+
+# Add the backend root to the path so we can import alu & operations
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,7 +21,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Allow frontend dev server to call the backend
+# Allow frontend to call the backend (CORS)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

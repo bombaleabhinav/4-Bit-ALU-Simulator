@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 
 import Switch from './components/Switch';
@@ -7,6 +7,8 @@ import ALUDiagram from './components/ALUDiagram';
 import ControlPanel from './components/ControlPanel';
 import OutputPanel from './components/OutputPanel';
 import { computeALU } from './alu';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 function App() {
   // ─── Input State ───
@@ -21,13 +23,38 @@ function App() {
   const [carry, setCarry] = useState(0);
   const [operation, setOperation] = useState('');
 
-  // Compute ALU output locally (no backend needed)
+  const controllerRef = useRef(null);
+
+  const compute = useCallback(async (a, b, s, m, c) => {
+    // Try API first, fallback to local computation
+    if (controllerRef.current) controllerRef.current.abort();
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    try {
+      const res = await fetch(`${API_URL}/api/alu`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ A: a, B: b, S: s, mode: m, cin: c }),
+        signal: controller.signal,
+      });
+      const data = await res.json();
+      setY(data.Y);
+      setCarry(data.carry);
+      setOperation(data.operation);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        // Fallback to local JS computation if API is unavailable
+        const result = computeALU(a, b, s, m, c);
+        setY(result.Y);
+        setCarry(result.carry);
+        setOperation(result.operation);
+      }
+    }
+  }, []);
+
   useEffect(() => {
-    const result = computeALU(A, B, S, mode, cin);
-    setY(result.Y);
-    setCarry(result.carry);
-    setOperation(result.operation);
-  }, [A, B, S, mode, cin]);
+    compute(A, B, S, mode, cin);
+  }, [A, B, S, mode, cin, compute]);
 
   // ─── Bit helpers ───
   const aBits = [(A >> 3) & 1, (A >> 2) & 1, (A >> 1) & 1, A & 1];
@@ -72,7 +99,6 @@ function App() {
               {['A3', 'A2', 'A1', 'A0'].map((label, i) => (
                 <div className="input-row" key={label}>
                   <Switch label={label} value={aBits[i]} onChange={(v) => handleABit(i, v)} />
-                  <div className="wire-line" />
                 </div>
               ))}
             </div>
@@ -85,7 +111,6 @@ function App() {
               {['B3', 'B2', 'B1', 'B0'].map((label, i) => (
                 <div className="input-row" key={label}>
                   <Switch label={label} value={bBits[i]} onChange={(v) => handleBBit(i, v)} />
-                  <div className="wire-line" />
                 </div>
               ))}
             </div>

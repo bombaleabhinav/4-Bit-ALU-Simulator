@@ -13,24 +13,6 @@ function ALUDiagram({ mode, operation }) {
         <div className="alu-schematic">
             {/* Main ALU enclosure */}
             <div className="alu-enclosure">
-                {/* Input arrows entering the ALU from the left */}
-                <div className="alu-input-arrows">
-                    <div className="arrow-group arrow-group-a">
-                        {['A3', 'A2', 'A1', 'A0'].map((label) => (
-                            <div className="arrow-line" key={label}>
-                                <span className="arrow-tip">→</span>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="arrow-group arrow-group-b">
-                        {['B3', 'B2', 'B1', 'B0'].map((label) => (
-                            <div className="arrow-line" key={label}>
-                                <span className="arrow-tip">→</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
                 {/* The two units */}
                 <div className="alu-units">
                     <div className={`alu-unit-box ${!isLogic ? 'active' : ''}`}>
