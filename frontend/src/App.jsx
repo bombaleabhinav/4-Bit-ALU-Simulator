@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 import Switch from './components/Switch';
@@ -6,8 +6,7 @@ import Led from './components/Led';
 import ALUDiagram from './components/ALUDiagram';
 import ControlPanel from './components/ControlPanel';
 import OutputPanel from './components/OutputPanel';
-
-const API_URL = 'http://localhost:8000/alu';
+import { computeALU } from './alu';
 
 function App() {
   // ─── Input State ───
@@ -22,31 +21,13 @@ function App() {
   const [carry, setCarry] = useState(0);
   const [operation, setOperation] = useState('');
 
-  const controllerRef = useRef(null);
-
-  const compute = useCallback(async (a, b, s, m, c) => {
-    if (controllerRef.current) controllerRef.current.abort();
-    const controller = new AbortController();
-    controllerRef.current = controller;
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ A: a, B: b, S: s, mode: m, cin: c }),
-        signal: controller.signal,
-      });
-      const data = await res.json();
-      setY(data.Y);
-      setCarry(data.carry);
-      setOperation(data.operation);
-    } catch (err) {
-      if (err.name !== 'AbortError') console.error('ALU fetch error:', err);
-    }
-  }, []);
-
+  // Compute ALU output locally (no backend needed)
   useEffect(() => {
-    compute(A, B, S, mode, cin);
-  }, [A, B, S, mode, cin, compute]);
+    const result = computeALU(A, B, S, mode, cin);
+    setY(result.Y);
+    setCarry(result.carry);
+    setOperation(result.operation);
+  }, [A, B, S, mode, cin]);
 
   // ─── Bit helpers ───
   const aBits = [(A >> 3) & 1, (A >> 2) & 1, (A >> 1) & 1, A & 1];
