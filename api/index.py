@@ -6,8 +6,8 @@ Deployed as a Python serverless function on Vercel.
 import sys
 import os
 
-# Add the backend root to the path so we can import alu & operations
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add the backend directory to the path so we can import alu & operations
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "backend"))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
