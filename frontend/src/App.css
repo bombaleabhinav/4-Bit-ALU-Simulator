@@ -84,19 +84,19 @@
   flex-direction: column;
   justify-content: center;
   padding: 12px 0 12px 24px;
-  gap: 20px;
+  gap: 40px;
 }
 
 .input-block {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .input-switches {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .input-row {
@@ -107,7 +107,7 @@
 
 /* Wire line from switch to ALU */
 .wire-line {
-  width: 50px;
+  width: 70px;
   height: 2px;
   background: #000;
   position: relative;
@@ -152,7 +152,7 @@
 
 .alu-enclosure {
   border: 3px solid #000;
-  padding: 16px;
+  padding: 16px 16px 16px 0;
   display: flex;
   align-items: center;
   gap: 0;
@@ -164,8 +164,8 @@
 .alu-input-arrows {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-right: 8px;
+  gap: 24px;
+  margin-right: 6px;
 }
 
 .arrow-group {
@@ -177,22 +177,22 @@
 .arrow-line {
   display: flex;
   align-items: center;
-  height: 12px;
+  height: 10px;
 }
 
 .arrow-line::before {
   content: '';
   display: inline-block;
-  width: 10px;
+  width: 14px;
   height: 2px;
   background: #000;
-  margin-right: 1px;
 }
 
 .arrow-line .arrow-tip {
-  font-size: 10px;
+  font-size: 9px;
   color: #000;
   line-height: 1;
+  margin-left: -1px;
 }
 
 /* The two units stacked */
