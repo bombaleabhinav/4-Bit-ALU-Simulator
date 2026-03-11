@@ -1,0 +1,435 @@
+        :root {
+            --bg-color: #f8f9fa;
+            --main-border: #000000;
+            --box-bg: rgba(255, 255, 255, 0.35);
+            --active-bg: rgba(0, 0, 0, 0.15);
+            --text-color: #000000;
+            --line-color: #000000;
+            --font-main: 'Times New Roman', Times, serif;
+            --glass-blur: blur(50px);
+            --glass-border: 1px solid rgba(0, 0, 0, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            min-height: 100vh;
+            overflow: auto;
+            user-select: none;
+            background: linear-gradient(135deg, #f9f9fb, #f4f7fa, #f7f9f6, #f5f8fc, #f8f7fa);
+            background-size: 400% 400%;
+            animation: pastelShift 100s ease infinite;
+        }
+
+        @keyframes pastelShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            position: relative;
+            width: 1150px;
+            height: 950px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            margin: 0 auto;
+        }
+
+        .circuit-wrapper {
+            position: absolute;
+            top: 40px;
+            left: 95px;
+            width: 1000px;
+            height: 800px;
+        }
+
+        /* SVG for drawing connecting lines */
+        #connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        line,
+        polyline,
+        path {
+            stroke: var(--line-color);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .arrowhead {
+            fill: var(--line-color);
+        }
+
+        /* The Main ALU Enclosure */
+        .alu-enclosure {
+            position: absolute;
+            top: 50px;
+            left: 200px;
+            width: 650px;
+            height: 700px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* Inner blocks (Arithmetic, Logic, Mux) */
+        .block {
+            position: absolute;
+            background: rgba(200, 220, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+        }
+
+        .arithmetic-unit {
+            top: 20px;
+            left: 20px;
+            width: 400px;
+            height: 280px;
+        }
+
+        .logic-unit {
+            bottom: 20px;
+            left: 20px;
+            width: 400px;
+            height: 280px;
+        }
+
+        .multiplexer {
+            position: absolute;
+            right: 40px;
+            width: 100px;
+            height: 400px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+
+        .pill-shape {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 10px 30px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            font-weight: normal;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        /* Input / Output Nodes that look like text logic operators */
+        .io-node {
+            position: absolute;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .io-label {
+            font-weight: bold;
+        }
+
+        .io-value {
+            width: 25px;
+            height: 25px;
+            border: 1px solid var(--main-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: all 0.2s;
+            font-family: var(--font-main);
+            z-index: 10;
+            border-radius: 6px;
+        }
+
+        /* Enclosing cards around inputs matching ALU blocks */
+        .input-group {
+            position: absolute;
+            background: rgba(230, 210, 240, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--glass-shadow);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-label {
+            position: absolute;
+            left: -80px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            transform: rotate(-90deg);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .group-a {
+            position: absolute;
+            left: 35px;
+            width: 80px;
+        }
+
+        .group-b {
+            position: absolute;
+            left: 35px;
+            width: 80px;
+        }
+
+        .group-s {
+            bottom: -55px;
+            left: 260px;
+            width: 320px;
+            height: 80px;
+        }
+
+        .group-s .input-group-label {
+            left: -30px;
+            top: 30px;
+        }
+
+        .io-value.active {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Specific node positions */
+        .in-cin {
+            top: 30px;
+            left: 50px;
+        }
+
+        /* A inputs base setup */
+        .in-a3,
+        .in-a2,
+        .in-a1,
+        .in-a0 {
+            left: 50px;
+        }
+
+        /* B inputs base setup */
+        .in-b3,
+        .in-b2,
+        .in-b1,
+        .in-b0 {
+            left: 50px;
+        }
+
+        /* Mode M */
+        .in-m {
+            bottom: -40px;
+            left: 710px;
+            flex-direction: column;
+        }
+
+        .mode-big-btn {
+            width: 140px !important;
+            height: 40px !important;
+            font-size: 1rem !important;
+            letter-spacing: 2px;
+            background: #fff;
+            color: #000;
+        }
+
+        .io-value.mode-big-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Select lines S */
+        .in-s3 {
+            bottom: -40px;
+            left: 288px;
+            flex-direction: column;
+        }
+
+        .in-s2 {
+            bottom: -40px;
+            left: 368px;
+            flex-direction: column;
+        }
+
+        .in-s1 {
+            bottom: -40px;
+            left: 448px;
+            flex-direction: column;
+        }
+
+        .in-s0 {
+            bottom: -40px;
+            left: 528px;
+            flex-direction: column;
+        }
+
+        /* Output Register Box (horizontal, like Reg S) */
+        .group-out {
+            position: absolute;
+            background: rgba(210, 235, 230, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--glass-shadow);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .group-out .input-group-label {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Output node positions (set dynamically via JS) */
+        .out-f-node {
+            flex-direction: column;
+        }
+
+        /* Displays Data */
+        .hud {
+            position: absolute;
+            bottom: 20px;
+            right: -260px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            padding: 20px 22px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 12px;
+            width: 240px;
+            z-index: 20;
+            box-shadow: var(--glass-shadow);
+            font-size: 1.3rem;
+            /* Scaled up */
+        }
+
+        .hud-title {
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            text-align: center;
+            font-size: 1.5rem;
+            /* Scaled up */
+        }
+
+        .hud-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            /* More breathing room */
+        }
+
+        .equation {
+            font-style: italic;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.4rem;
+            /* Scaled up */
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+
+        /* Highlight animating lines */
+        path.pulse {
+            stroke-width: 2.5;
+            stroke-dasharray: 5, 5;
+            animation: dash 1s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -10;
+            }
+        }
+
+        /* Custom marker arrowhead definition hidden from view */
+        svg {
+            position: absolute;
+        }
+
+        /* Titles and Credits */
+        .page-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-color);
+            letter-spacing: 5px;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            letter-spacing: 2px;
+            z-index: 100;
+            opacity: 0.6;
+        }
+    </style>
