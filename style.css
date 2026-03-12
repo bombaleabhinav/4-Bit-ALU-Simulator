@@ -23,23 +23,12 @@
             min-height: 100vh;
             overflow: hidden;
             user-select: none;
-            background: linear-gradient(135deg, #f9f9fb, #f4f7fa, #f7f9f6, #f5f8fc, #f8f7fa);
-            background-size: 400% 400%;
-            animation: pastelShift 10s ease infinite;
-        }
-
-        @keyframes pastelShift {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            background-color: #f4f7fa;
+            background-image: 
+                linear-gradient(rgba(170, 180, 190, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(170, 180, 190, 0.25) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
         }
 
         .container {
