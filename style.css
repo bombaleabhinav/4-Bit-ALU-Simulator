@@ -561,9 +561,10 @@
 
         /* Theme Toggle Button */
         .theme-toggle-btn {
-            position: absolute;
-            right: 195px;
-            /* Moved closer */
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 200;
             background: transparent;
             border: none;
             width: 32px;

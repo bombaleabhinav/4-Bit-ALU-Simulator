@@ -405,12 +405,8 @@ if (themeToggleBtn && themeIcon) {
             themeIcon.innerHTML = `<path d="${moonPath}"/>`;
         }
     };
-
-    // Load preference from local storage on init
-    const savedTheme = localStorage.getItem('alu-simulator-theme');
-    if (savedTheme === 'dark') {
-        applyTheme(true);
-    }
+    // Always start with light mode by default
+    applyTheme(false);
 
     // Toggle event listener
     themeToggleBtn.addEventListener('click', () => {
