@@ -339,14 +339,14 @@ function adjustScale() {
 
     const drawer = document.getElementById('truth-table-drawer');
     const isDrawerOpen = drawer && drawer.classList.contains('open');
-    const drawerSpace = 600;
+    const drawerSpace = 450;
 
     let availableWidth = vw;
     let containerCenter = vw / 2;
 
     // Check if there is enough room to put side-by-side
     // Using a dynamic split ratio
-    if (isDrawerOpen && vw > 950) { 
+    if (isDrawerOpen && vw > 950) {
         availableWidth = vw - drawerSpace;
         containerCenter = availableWidth / 2;
     }
