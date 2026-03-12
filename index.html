@@ -10,7 +10,10 @@
 
 <body>
 
-    <div class="page-header">4-BIT ALU SIMULATOR</div>
+    <div class="page-header">
+        4-BIT ALU SIMULATOR
+        <button id="toggle-tables-btn" class="glass-btn">Truth Tables</button>
+    </div>
     <div class="page-footer">Made with &hearts; by Abhinav</div>
 
     <div class="container">
@@ -226,6 +229,301 @@
             <div class="equation" id="val-eq">F = A</div>
         </div>
 
+    </div>
+
+    <!-- Truth Tables Drawer -->
+    <div id="truth-table-drawer" class="side-panel">
+        <div class="panel-header">
+            <h2>ALU Truth Tables</h2>
+            <button id="close-drawer" class="close-btn">&times;</button>
+        </div>
+        <div class="panel-content">
+            <div id="logic-table-container" class="table-container">
+                <h3 style="margin-top: 0; text-align: center;">Logic Operations</h3>
+                <table class="truth-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Selection</th>
+                            <th>Logic (M=H)</th>
+                        </tr>
+                        <tr>
+                            <th>S3</th>
+                            <th>S2</th>
+                            <th>S1</th>
+                            <th>S0</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">A</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td><span style="text-decoration:overline">A+B</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">A</span>B</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>Logical 0</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">AB</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td><span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>A &oplus; B</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>A<span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">A</span>+B</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td><span style="text-decoration:overline">A &oplus; B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>AB</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>Logical 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>A+<span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>A+B</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="arith-table-container" class="table-container">
+                <h3 style="text-align: center; margin-top: 0;">Arithmatic Operations</h3>
+                <table class="truth-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4" rowspan="2">Selection</th>
+                            <th colspan="2">Active High Data</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">M=L; Arithmatic Operations</th>
+                        </tr>
+                        <tr>
+                            <th>S3</th>
+                            <th>S2</th>
+                            <th>S1</th>
+                            <th>S0</th>
+                            <th>C<sub>n</sub> = H (with carry)</th>
+                            <th>C<sub>n</sub> = L (no carry)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A</td>
+                            <td>F=A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=A+B</td>
+                            <td>F=(A+B) Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=A+<span style="text-decoration:overline">B</span></td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=Minus 1(2's Compl)</td>
+                            <td>F=Zero</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A Plus A<span style="text-decoration:overline">B</span></td>
+                            <td>F=A Plus A<span style="text-decoration:overline">B</span> Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=(A+B) Plus A<span style="text-decoration:overline">B</span></td>
+                            <td>F=(A+B) Plus A<span style="text-decoration:overline">B</span> Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=A Minus B Minus 1</td>
+                            <td>F=A Minus B</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=A<span style="text-decoration:overline">B</span> Minus 1</td>
+                            <td>F=A<span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A Plus AB</td>
+                            <td>F=A Plus AB Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=A Plus B</td>
+                            <td>F=A Plus B Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus AB</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus AB Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=AB Minus 1</td>
+                            <td>F=AB</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A Plus A</td>
+                            <td>F=A Plus A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=(A+B) Plus A</td>
+                            <td>F=(A+B) Plus A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus A</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=A Minus 1</td>
+                            <td>F=A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

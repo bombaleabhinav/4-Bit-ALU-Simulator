@@ -294,6 +294,19 @@ function runSimulation() {
         cinNode.style.pointerEvents = "auto";
         if (coutNode2) { coutNode2.style.opacity = "1"; }
     }
+
+    // Update Truth Tables visibility
+    const logicTable = document.getElementById('logic-table-container');
+    const arithTable = document.getElementById('arith-table-container');
+    if (logicTable && arithTable) {
+        if (M) {
+            logicTable.style.display = 'block';
+            arithTable.style.display = 'none';
+        } else {
+            logicTable.style.display = 'none';
+            arithTable.style.display = 'block';
+        }
+    }
 }
 
 // Bind clicks
@@ -320,21 +333,55 @@ function adjustScale() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    // The entire layout is now 1450px wide and 950px high.
-    // Let's add padding so it doesn't touch the edges completely.
-    const targetWidth = 1450 + 40; 
-    const targetHeight = 950 + 120; // 120px to account for header and footer spacing
+    // Layout configuration
+    const targetWidth = 1450 + 40;
+    const targetHeight = 950 + 120; // 120px padding for headers
 
-    const scaleX = vw / targetWidth;
+    const drawer = document.getElementById('truth-table-drawer');
+    const isDrawerOpen = drawer && drawer.classList.contains('open');
+    const drawerSpace = 600;
+
+    let availableWidth = vw;
+    let containerCenter = vw / 2;
+
+    // Check if there is enough room to put side-by-side
+    // Using a dynamic split ratio
+    if (isDrawerOpen && vw > 950) { 
+        availableWidth = vw - drawerSpace;
+        containerCenter = availableWidth / 2;
+    }
+
+    const scaleX = availableWidth / targetWidth;
     const scaleY = vh / targetHeight;
     const scale = Math.min(scaleX, scaleY);
-    
-    // Apply center translation first, then scale
+
+    // Apply scaling and precise translation
+    container.style.left = containerCenter + 'px';
     container.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 
 // Bind resize listener
 window.addEventListener('resize', adjustScale);
 
-// Initial call
+// Initial scale
 adjustScale();
+
+// Truth Tables Drawer Toggle Logic
+const toggleBtn = document.getElementById('toggle-tables-btn');
+const drawer = document.getElementById('truth-table-drawer');
+const closeDrawerBtn = document.getElementById('close-drawer');
+
+if (toggleBtn && drawer && closeDrawerBtn) {
+    toggleBtn.addEventListener('click', () => {
+        drawer.classList.add('open');
+        adjustScale();
+    });
+
+    closeDrawerBtn.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        adjustScale();
+    });
+
+    // Close when clicking outside the panel doesn't interfere with main component interaction visually,
+    // so let the panel remain open until toggled off explicitly or close button is clicked!
+}
