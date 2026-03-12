@@ -385,3 +385,39 @@ if (toggleBtn && drawer && closeDrawerBtn) {
     // Close when clicking outside the panel doesn't interfere with main component interaction visually,
     // so let the panel remain open until toggled off explicitly or close button is clicked!
 }
+
+// ==========================================
+// THEME TOGGLE (LIGHT/DARK) WITH LOCALSTORAGE
+// ==========================================
+const themeToggleBtn = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+
+const moonPath = "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z";
+const sunPath = "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z";
+
+if (themeToggleBtn && themeIcon) {
+    const applyTheme = (isDark) => {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            themeIcon.innerHTML = `<path d="${sunPath}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeIcon.innerHTML = `<path d="${moonPath}"/>`;
+        }
+    };
+
+    // Load preference from local storage on init
+    const savedTheme = localStorage.getItem('alu-simulator-theme');
+    if (savedTheme === 'dark') {
+        applyTheme(true);
+    }
+
+    // Toggle event listener
+    themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('dark-mode');
+        // Instantly toggle
+        applyTheme(!isDark);
+        // Persist
+        localStorage.setItem('alu-simulator-theme', !isDark ? 'dark' : 'light');
+    });
+}
