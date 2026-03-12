@@ -312,4 +312,29 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
 // Init
 runSimulation();
 
-// </script >
+// ==========================================
+// RESPONSIVENESS & SCALING
+// ==========================================
+function adjustScale() {
+    const container = document.querySelector('.container');
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // The entire layout is now 1450px wide and 950px high.
+    // Let's add padding so it doesn't touch the edges completely.
+    const targetWidth = 1450 + 40; 
+    const targetHeight = 950 + 120; // 120px to account for header and footer spacing
+
+    const scaleX = vw / targetWidth;
+    const scaleY = vh / targetHeight;
+    const scale = Math.min(scaleX, scaleY);
+    
+    // Apply center translation first, then scale
+    container.style.transform = `translate(-50%, -50%) scale(${scale})`;
+}
+
+// Bind resize listener
+window.addEventListener('resize', adjustScale);
+
+// Initial call
+adjustScale();
