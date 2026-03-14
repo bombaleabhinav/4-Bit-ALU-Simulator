@@ -1,32 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4-Bit ALU Diagram Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
     <div class="page-header">
         4-BIT ALU SIMULATOR
         <button id="toggle-tables-btn" class="glass-btn">Truth Tables</button>
     </div>
     <div class="page-footer">Made with &hearts; by Abhinav</div>
-
     <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
         <svg viewBox="0 0 24 24" id="theme-icon">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
     </button>
-
     <div class="container">
-
         <div class="circuit-wrapper">
-
-            <!-- SVG Canvas for routing logic lines -->
             <svg id="connections">
                 <defs>
                     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
@@ -37,22 +29,11 @@
                         <circle cx="5" cy="5" r="3" fill="#000" />
                     </marker>
                 </defs>
-
-                <!-- Draw the base routing lines to mimic the diagram -->
-                <!-- Cin (horizontal then slightly down to Arith boundary) -->
                 <path d="M 115 42 L 320 42 L 320 80 L 220 80" marker-end="url(#arrow)" />
-
-                <!-- A Bus routing -->
                 <path id="path-a3-arith" d="M 115 92 L 180 92 L 180 200 L 220 200" marker-end="url(#arrow)" />
-                <!-- A3 to Arith -->
                 <path id="path-a2-arith" d="M 115 192 L 160 192 L 160 220 L 220 220" marker-end="url(#arrow)" />
-                <!-- A2 to Arith -->
                 <path id="path-a1-arith" d="M 115 292 L 140 292 L 140 240 L 220 240" marker-end="url(#arrow)" />
-                <!-- A1 to Arith -->
                 <path id="path-a0-arith" d="M 115 392 L 130 392 L 130 260 L 220 260" marker-end="url(#arrow)" />
-                <!-- A0 to Arith -->
-
-                <!-- A branched to Logic (vertical drops) -->
                 <path id="path-a3-logic" d="M 180 200 L 180 460 L 220 460" marker-end="url(#arrow)"
                     marker-start="url(#dot)" />
                 <path id="path-a2-logic" d="M 160 220 L 160 480 L 220 480" marker-end="url(#arrow)"
@@ -61,18 +42,10 @@
                     marker-start="url(#dot)" />
                 <path id="path-a0-logic" d="M 130 260 L 130 520 L 220 520" marker-end="url(#arrow)"
                     marker-start="url(#dot)" />
-
-                <!-- B Bus routing -->
                 <path id="path-b3-arith" d="M 115 542 L 180 542 L 180 280 L 220 280" marker-end="url(#arrow)" />
-                <!-- B3 to Arith -->
                 <path id="path-b2-arith" d="M 115 642 L 160 642 L 160 300 L 220 300" marker-end="url(#arrow)" />
-                <!-- B2 to Arith -->
                 <path id="path-b1-arith" d="M 115 742 L 140 742 L 140 320 L 220 320" marker-end="url(#arrow)" />
-                <!-- B1 to Arith -->
                 <path id="path-b0-arith" d="M 115 842 L 130 842 L 130 340 L 220 340" marker-end="url(#arrow)" />
-                <!-- B0 to Arith -->
-
-                <!-- B branched to logic -->
                 <path id="path-b3-logic" d="M 180 542 L 180 560 L 220 560" marker-end="url(#arrow)"
                     marker-start="url(#dot)" />
                 <path id="path-b2-logic" d="M 160 642 L 160 580 L 220 580" marker-end="url(#arrow)"
@@ -81,58 +54,34 @@
                     marker-start="url(#dot)" />
                 <path id="path-b0-logic" d="M 130 842 L 130 620 L 220 620" marker-end="url(#arrow)"
                     marker-start="url(#dot)" />
-
-                <!-- S Select Lines (Bottom up) -->
-                <path d="M 300 775 L 300 650" marker-end="url(#arrow)" /> <!-- S3 to Logic -->
-                <path d="M 380 775 L 380 650" marker-end="url(#arrow)" /> <!-- S2 to Logic -->
-                <path d="M 460 775 L 460 650" marker-end="url(#arrow)" /> <!-- S1 to Logic -->
-                <path d="M 540 775 L 540 650" marker-end="url(#arrow)" /> <!-- S0 to Logic -->
-
+                <path d="M 300 775 L 300 650" marker-end="url(#arrow)" /> 
+                <path d="M 380 775 L 380 650" marker-end="url(#arrow)" /> 
+                <path d="M 460 775 L 460 650" marker-end="url(#arrow)" /> 
+                <path d="M 540 775 L 540 650" marker-end="url(#arrow)" /> 
                 <path id="s3-arith" d="M 300 650 L 300 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
-                <!-- S3 to Arith -->
                 <path id="s2-arith" d="M 380 650 L 380 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
-                <!-- S2 to Arith -->
                 <path id="s1-arith" d="M 460 650 L 460 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
-                <!-- S1 to Arith -->
                 <path id="s0-arith" d="M 540 650 L 540 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
-                <!-- S0 to Arith -->
-
-                <!-- Mode (Top down) -->
-                <path id="mode-mux-line" d="M 792 65 L 792 150" marker-end="url(#arrow)" /> <!-- M to Multiplexer -->
-
-                <!-- Block Outputs to Multiplexer -->
+                <path id="mode-mux-line" d="M 792 65 L 792 150" marker-end="url(#arrow)" /> 
                 <path d="M 620 210 L 710 210" marker-end="url(#arrow)" id="arith-out-line" />
                 <path d="M 620 510 L 710 510" marker-end="url(#arrow)" id="logic-out-line" />
-
-                <!-- Multiplexer Output -->
                 <path d="M 810 400 L 890 400" marker-end="url(#arrow)" id="mux-out-line" />
-
-                <!-- Cout Output from Arith -->
                 <path d="M 620 100 L 880 100" marker-end="url(#arrow)" id="cout-out-line" />
-
             </svg>
-
-            <!-- Main Enclosure -->
             <div class="alu-enclosure">
                 <div class="block arithmetic-unit" id="arithmetic-block">
                     <div class="pill-shape">Arithmetic Unit</div>
                 </div>
-
                 <div class="block logic-unit" id="logic-block">
                     <div class="pill-shape">Logic Unit</div>
                 </div>
-
                 <div class="block multiplexer" id="mux-block">
                     Multiplexer
                 </div>
             </div>
-
-            <!-- Group Box Reg A -->
             <div class="input-group group-a">
                 <div class="input-group-label">Reg A</div>
             </div>
-
-            <!-- Inputs A -->
             <div class="io-node in-a3"><span class="io-label">A3</span>
                 <div class="io-value toggle-btn" data-type="A" data-index="3">0</div>
             </div>
@@ -145,13 +94,9 @@
             <div class="io-node in-a0"><span class="io-label">A0</span>
                 <div class="io-value toggle-btn" data-type="A" data-index="0">0</div>
             </div>
-
-            <!-- Group Box Reg B -->
             <div class="input-group group-b">
                 <div class="input-group-label">Reg B</div>
             </div>
-
-            <!-- Inputs B -->
             <div class="io-node in-b3"><span class="io-label">B3</span>
                 <div class="io-value toggle-btn" data-type="B" data-index="3">0</div>
             </div>
@@ -164,23 +109,14 @@
             <div class="io-node in-b0"><span class="io-label">B0</span>
                 <div class="io-value toggle-btn" data-type="B" data-index="0">0</div>
             </div>
-
-            <!-- Carry In -->
             <div class="io-node in-cin"><span class="io-label">Cin</span>
                 <div class="io-value toggle-btn" id="t-cin">0</div>
             </div>
-
-            <!-- Mode M -->
             <div class="io-node in-m"><span class="io-label">MODE :</span>
                 <div class="io-value toggle-btn mode-big-btn active" id="t-m">LOGICAL</div>
             </div>
-
-            <!-- Group Box Reg S Selectors -->
             <div class="input-group group-s">
-                <!-- <div class="input-group-label">Reg S</div> -->
             </div>
-
-            <!-- Selects -->
             <div class="io-node in-s3">
                 <div class="io-value toggle-btn" data-type="S" data-index="3">0</div><span class="io-label">S3</span>
             </div>
@@ -193,13 +129,9 @@
             <div class="io-node in-s0">
                 <div class="io-value toggle-btn" data-type="S" data-index="0">0</div><span class="io-label">S0</span>
             </div>
-
-            <!-- Output Register Box -->
             <div class="input-group group-out">
                 <div class="input-group-label">Output</div>
             </div>
-
-            <!-- Output Nodes: Cout, F3, F2, F1, F0 (equally spaced vertically) -->
             <div class="io-node out-f-node" id="node-cout">
                 <span class="io-label">Carry</span>
                 <div class="io-value" id="cout">0</div>
@@ -220,10 +152,7 @@
                 <span class="io-label">F0</span>
                 <div class="io-value" id="f0">0</div>
             </div>
-
-        </div> <!-- end circuit-wrapper -->
-
-        <!-- Data HUD -->
+        </div> 
         <div class="hud">
             <div class="hud-title">Current State</div>
             <div class="hud-row"><span>A:</span> <span id="val-a">0000 (0)</span></div>
@@ -234,10 +163,7 @@
             </div>
             <div class="equation" id="val-eq">F = A</div>
         </div>
-
     </div>
-
-    <!-- Truth Tables Drawer -->
     <div id="truth-table-drawer" class="side-panel">
         <div class="panel-header">
             <h2>ALU Truth Tables</h2>
@@ -376,7 +302,6 @@
                     </tbody>
                 </table>
             </div>
-
             <div id="arith-table-container" class="table-container">
                 <h3 style="text-align: center; margin-top: 0;">Arithmatic Operations</h3>
                 <table class="truth-table">
@@ -531,8 +456,6 @@
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
-
 </html>
