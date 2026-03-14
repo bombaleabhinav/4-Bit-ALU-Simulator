@@ -596,6 +596,8 @@
             --box-bg: #191919;
             --active-bg: rgba(0, 0, 0, 0.35);
             --text-color: #BBE1FA;
+            /* --text-color: #D89216; */
+            /* crazy choice of yellow still at the back of my mind  */
             --line-color: #ffffff93;
 
             background-color: var(--bg-color);
