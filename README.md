@@ -15,16 +15,16 @@ This project was built to visually demonstrate the underlying electronics and me
   Toggle the individual bit states from `0` to `1` by clicking on them. The visual ALU data bus will execute your changes instantaneously.
 - **Selectors (S3, S2, S1, S0)**
   The opcodes dictating *which* arithmetic or logic mechanism the ALU should evaluate on the payload variables (`A` & `B`).
-- **MODE (`M`)**
+- **MODE**
   Switch over between executing Arithmetic instructions and generic Logics (like AND, OR, XOR, NOT). 
 - **Carry In (Cin)**
   Inject a carry input bit directly into the loop (for arithemetic operations only).
 - **Output (F3, F2, F1, F0)**
   Displays the raw 4-bit resulting execution pushed out from the ALU.
-- **Carry Out (Carry/Cout)**
-  Reflects the final overflow output bit evaluated after an Arithmetic calculation.
-- **Current State HUD**
-  The dynamic box in the bottom right actively converts raw binary sequences into decimal values for quick reference of calculation outcomes.
+- **Carry Out (Carry)**
+  Reflects the overflow output bit after an Arithmetic calculation , if any.
+- **Current State**
+  The dynamic box in the bottom right actively converts raw binary sequences into decimal values for quick reference of calculation outcomes (especially arithemetic ones).
 - **Truth Tables Drawer**
   Located at the top right header, click `Truth Tables` to open a referencing document to understand opcode selection!
 
