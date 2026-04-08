@@ -82,16 +82,16 @@ document.getElementById('s2-arith').setAttribute('d', `M 380 650 L 380 ${S_ARROW
 document.getElementById('s1-arith').setAttribute('d', `M 460 650 L 460 ${S_ARROW_REACH_Y}`);
 document.getElementById('s0-arith').setAttribute('d', `M 540 650 L 540 ${S_ARROW_REACH_Y}`);
 const logicOps = [
-    { label: "A̅", fn: (a, b) => ~a },
-    { label: "A OR B", fn: (a, b) => a | b },
-    { label: "A AND B̅", fn: (a, b) => a & (~b & 15) },
+    { label: "A̅", fn: (a, b) => (~a & 15) },
+    { label: "NOR", fn: (a, b) => (~a & 15) & (~b & 15) },
+    { label: "A̅B", fn: (a, b) => (~a & 15) & b },
     { label: "Logical 0", fn: (a, b) => 0 },
-    { label: "A AND B̅", fn: (a, b) => a & (~b & 15) },
-    { label: "B̅", fn: (a, b) => ~b },
+    { label: "NAND", fn: (a, b) => (~(a & b) & 15) },
+    { label: "B̅", fn: (a, b) => (~b & 15) },
     { label: "A XOR B", fn: (a, b) => a ^ b },
-    { label: "A AND B", fn: (a, b) => a & b },
-    { label: "A OR B", fn: (a, b) => a | b },
-    { label: "A XOR B", fn: (a, b) => a ^ b },
+    { label: "AB̅", fn: (a, b) => a & (~b & 15) },
+    { label: "A̅+B", fn: (a, b) => (~a & 15) | b },
+    { label: "XNOR", fn: (a, b) => (~(a ^ b) & 15) },
     { label: "B", fn: (a, b) => b },
     { label: "A AND B", fn: (a, b) => a & b },
     { label: "Logical 1", fn: (a, b) => 15 },
@@ -101,8 +101,8 @@ const logicOps = [
 ];
 const arithHighOps = [
     { label: "A", fn: (a, b) => a },
-    { label: "A+B", fn: (a, b) => a + b },
-    { label: "A+B̅", fn: (a, b) => a + (~b & 15) },
+    { label: "A+B", fn: (a, b) => a | b },
+    { label: "A+B̅", fn: (a, b) => a | (~b & 15) },
     { label: "−1", fn: (a, b) => -1 },
     { label: "A+AB̅", fn: (a, b) => a + (a & (~b & 15)) },
     { label: "(A+B)+AB̅", fn: (a, b) => (a | b) + (a & (~b & 15)) },
@@ -110,11 +110,11 @@ const arithHighOps = [
     { label: "AB̅−1", fn: (a, b) => (a & (~b & 15)) - 1 },
     { label: "A+AB", fn: (a, b) => a + (a & b) },
     { label: "A+B", fn: (a, b) => a + b },
-    { label: "(A+B)+AB", fn: (a, b) => (a | b) + (a & b) },
+    { label: "(A+B̅)+AB", fn: (a, b) => (a | (~b & 15)) + (a & b) },
     { label: "AB−1", fn: (a, b) => (a & b) - 1 },
     { label: "A+A", fn: (a, b) => a + a },
     { label: "(A+B)+A", fn: (a, b) => (a | b) + a },
-    { label: "(A+B)+A", fn: (a, b) => (a | b) + a },
+    { label: "(A+B̅)+A", fn: (a, b) => (a | (~b & 15)) + a },
     { label: "A−1", fn: (a, b) => a - 1 }
 ];
 const arithLowOps = [
@@ -128,11 +128,11 @@ const arithLowOps = [
     { label: "AB̅", fn: (a, b) => (a & (~b & 15)) },
     { label: "A+AB+1", fn: (a, b) => a + (a & b) + 1 },
     { label: "A+B+1", fn: (a, b) => a + b + 1 },
-    { label: "(A+B)+AB+1", fn: (a, b) => (a | b) + (a & b) + 1 },
+    { label: "(A+B̅)+AB+1", fn: (a, b) => (a | (~b & 15)) + (a & b) + 1 },
     { label: "AB", fn: (a, b) => (a & b) },
     { label: "A+A+1", fn: (a, b) => a + a + 1 },
     { label: "(A+B)+A+1", fn: (a, b) => (a | b) + a + 1 },
-    { label: "(A+B)+A+1", fn: (a, b) => (a | b) + a + 1 },
+    { label: "(A+B̅)+A+1", fn: (a, b) => (a | (~b & 15)) + a + 1 },
     { label: "A", fn: (a, b) => a }
 ];
 function getGroupVal(type) {
