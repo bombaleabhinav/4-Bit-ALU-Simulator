@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Bit ALU Diagram Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-header">
+        4-BIT ALU SIMULATOR
+        <button id="toggle-tables-btn" class="glass-btn">Truth Tables</button>
+        <a href="index.html" class="glass-btn" style="right: 220px; text-decoration: none; color: inherit;">Home</a>
+    </div>
+    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a></div>
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+        <svg viewBox="0 0 24 24" id="theme-icon">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    <div class="container">
+        <div class="circuit-wrapper">
+            <svg id="connections">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" class="arrowhead" />
+                    </marker>
+                    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5">
+                        <circle cx="5" cy="5" r="3" fill="#000" />
+                    </marker>
+                </defs>
+                <path d="M 115 42 L 320 42 L 320 80 L 220 80" marker-end="url(#arrow)" />
+                <path id="path-a3-arith" d="M 115 92 L 180 92 L 180 200 L 220 200" marker-end="url(#arrow)" />
+                <path id="path-a2-arith" d="M 115 192 L 160 192 L 160 220 L 220 220" marker-end="url(#arrow)" />
+                <path id="path-a1-arith" d="M 115 292 L 140 292 L 140 240 L 220 240" marker-end="url(#arrow)" />
+                <path id="path-a0-arith" d="M 115 392 L 130 392 L 130 260 L 220 260" marker-end="url(#arrow)" />
+                <path id="path-a3-logic" d="M 180 200 L 180 460 L 220 460" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-a2-logic" d="M 160 220 L 160 480 L 220 480" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-a1-logic" d="M 140 240 L 140 500 L 220 500" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-a0-logic" d="M 130 260 L 130 520 L 220 520" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-b3-arith" d="M 115 542 L 180 542 L 180 280 L 220 280" marker-end="url(#arrow)" />
+                <path id="path-b2-arith" d="M 115 642 L 160 642 L 160 300 L 220 300" marker-end="url(#arrow)" />
+                <path id="path-b1-arith" d="M 115 742 L 140 742 L 140 320 L 220 320" marker-end="url(#arrow)" />
+                <path id="path-b0-arith" d="M 115 842 L 130 842 L 130 340 L 220 340" marker-end="url(#arrow)" />
+                <path id="path-b3-logic" d="M 180 542 L 180 560 L 220 560" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-b2-logic" d="M 160 642 L 160 580 L 220 580" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-b1-logic" d="M 140 742 L 140 600 L 220 600" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path id="path-b0-logic" d="M 130 842 L 130 620 L 220 620" marker-end="url(#arrow)"
+                    marker-start="url(#dot)" />
+                <path d="M 300 775 L 300 650" marker-end="url(#arrow)" /> 
+                <path d="M 380 775 L 380 650" marker-end="url(#arrow)" /> 
+                <path d="M 460 775 L 460 650" marker-end="url(#arrow)" /> 
+                <path d="M 540 775 L 540 650" marker-end="url(#arrow)" /> 
+                <path id="s3-arith" d="M 300 650 L 300 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
+                <path id="s2-arith" d="M 380 650 L 380 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
+                <path id="s1-arith" d="M 460 650 L 460 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
+                <path id="s0-arith" d="M 540 650 L 540 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
+                <path id="mode-mux-line" d="M 792 65 L 792 150" marker-end="url(#arrow)" /> 
+                <path d="M 620 210 L 710 210" marker-end="url(#arrow)" id="arith-out-line" />
+                <path d="M 620 510 L 710 510" marker-end="url(#arrow)" id="logic-out-line" />
+                <path d="M 810 400 L 890 400" marker-end="url(#arrow)" id="mux-out-line" />
+                <path d="M 620 100 L 880 100" marker-end="url(#arrow)" id="cout-out-line" />
+            </svg>
+            <div class="alu-enclosure">
+                <div class="block arithmetic-unit" id="arithmetic-block">
+                    <div class="pill-shape">Arithmetic Unit</div>
+                </div>
+                <div class="block logic-unit" id="logic-block">
+                    <div class="pill-shape">Logic Unit</div>
+                </div>
+                <div class="block multiplexer" id="mux-block">
+                    Multiplexer
+                </div>
+            </div>
+            <div class="input-group group-a">
+                <div class="input-group-label">Reg A</div>
+            </div>
+            <div class="io-node in-a3"><span class="io-label">A3</span>
+                <div class="io-value toggle-btn" data-type="A" data-index="3">0</div>
+            </div>
+            <div class="io-node in-a2"><span class="io-label">A2</span>
+                <div class="io-value toggle-btn" data-type="A" data-index="2">0</div>
+            </div>
+            <div class="io-node in-a1"><span class="io-label">A1</span>
+                <div class="io-value toggle-btn" data-type="A" data-index="1">0</div>
+            </div>
+            <div class="io-node in-a0"><span class="io-label">A0</span>
+                <div class="io-value toggle-btn" data-type="A" data-index="0">0</div>
+            </div>
+            <div class="input-group group-b">
+                <div class="input-group-label">Reg B</div>
+            </div>
+            <div class="io-node in-b3"><span class="io-label">B3</span>
+                <div class="io-value toggle-btn" data-type="B" data-index="3">0</div>
+            </div>
+            <div class="io-node in-b2"><span class="io-label">B2</span>
+                <div class="io-value toggle-btn" data-type="B" data-index="2">0</div>
+            </div>
+            <div class="io-node in-b1"><span class="io-label">B1</span>
+                <div class="io-value toggle-btn" data-type="B" data-index="1">0</div>
+            </div>
+            <div class="io-node in-b0"><span class="io-label">B0</span>
+                <div class="io-value toggle-btn" data-type="B" data-index="0">0</div>
+            </div>
+            <div class="io-node in-cin"><span class="io-label">Cin</span>
+                <div class="io-value toggle-btn" id="t-cin">0</div>
+            </div>
+            <div class="io-node in-m"><span class="io-label">MODE :</span>
+                <div class="io-value toggle-btn mode-big-btn active" id="t-m">LOGICAL</div>
+            </div>
+            <div class="input-group group-s">
+            </div>
+            <div class="io-node in-s3">
+                <div class="io-value toggle-btn" data-type="S" data-index="3">0</div><span class="io-label">S3</span>
+            </div>
+            <div class="io-node in-s2">
+                <div class="io-value toggle-btn" data-type="S" data-index="2">0</div><span class="io-label">S2</span>
+            </div>
+            <div class="io-node in-s1">
+                <div class="io-value toggle-btn" data-type="S" data-index="1">0</div><span class="io-label">S1</span>
+            </div>
+            <div class="io-node in-s0">
+                <div class="io-value toggle-btn" data-type="S" data-index="0">0</div><span class="io-label">S0</span>
+            </div>
+            <div class="input-group group-out">
+                <div class="input-group-label">Output</div>
+            </div>
+            <div class="io-node out-f-node" id="node-cout">
+                <span class="io-label">Carry</span>
+                <div class="io-value" id="cout">0</div>
+            </div>
+            <div class="io-node out-f-node" id="node-f3">
+                <span class="io-label">F3</span>
+                <div class="io-value" id="f3">0</div>
+            </div>
+            <div class="io-node out-f-node" id="node-f2">
+                <span class="io-label">F2</span>
+                <div class="io-value" id="f2">0</div>
+            </div>
+            <div class="io-node out-f-node" id="node-f1">
+                <span class="io-label">F1</span>
+                <div class="io-value" id="f1">0</div>
+            </div>
+            <div class="io-node out-f-node" id="node-f0">
+                <span class="io-label">F0</span>
+                <div class="io-value" id="f0">0</div>
+            </div>
+        </div> 
+        <div class="hud">
+            <div class="hud-title">Current State</div>
+            <div class="hud-row"><span>A:</span> <span id="val-a">0000 (0)</span></div>
+            <div class="hud-row"><span>B:</span> <span id="val-b">0000 (0)</span></div>
+            <div class="hud-row"><span>S:</span> <span id="val-s">0000 (0)</span></div>
+            <div class="hud-row" style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 5px;">
+                <span>Output:</span> <span id="val-res">0000 (0)</span>
+            </div>
+            <div class="equation" id="val-eq">F = A</div>
+        </div>
+    </div>
+    <div id="truth-table-drawer" class="side-panel">
+        <div class="panel-header">
+            <h2>ALU Truth Tables</h2>
+            <button id="close-drawer" class="close-btn">&times;</button>
+        </div>
+        <div class="panel-content">
+            <div id="logic-table-container" class="table-container">
+                <h3 style="margin-top: 0; text-align: center;">Logic Operations</h3>
+                <table class="truth-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Selection</th>
+                            <th>Logic (M=H)</th>
+                        </tr>
+                        <tr>
+                            <th>S3</th>
+                            <th>S2</th>
+                            <th>S1</th>
+                            <th>S0</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">A</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td><span style="text-decoration:overline">A+B</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">A</span>B</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>Logical 0</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">AB</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td><span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>A &oplus; B</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>A<span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td><span style="text-decoration:overline">A</span>+B</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td><span style="text-decoration:overline">A &oplus; B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>AB</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>Logical 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>A+<span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>A+B</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="arith-table-container" class="table-container">
+                <h3 style="text-align: center; margin-top: 0;">Arithmatic Operations</h3>
+                <table class="truth-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4" rowspan="2">Selection</th>
+                            <th colspan="2">Active High Data</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">M=L; Arithmatic Operations</th>
+                        </tr>
+                        <tr>
+                            <th>S3</th>
+                            <th>S2</th>
+                            <th>S1</th>
+                            <th>S0</th>
+                            <th>C<sub>n</sub> = H (with carry)</th>
+                            <th>C<sub>n</sub> = L (no carry)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A</td>
+                            <td>F=A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=A+B</td>
+                            <td>F=(A+B) Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=A+<span style="text-decoration:overline">B</span></td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=Minus 1(2's Compl)</td>
+                            <td>F=Zero</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A Plus A<span style="text-decoration:overline">B</span></td>
+                            <td>F=A Plus A<span style="text-decoration:overline">B</span> Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=(A+B) Plus A<span style="text-decoration:overline">B</span></td>
+                            <td>F=(A+B) Plus A<span style="text-decoration:overline">B</span> Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=A Minus B Minus 1</td>
+                            <td>F=A Minus B</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=A<span style="text-decoration:overline">B</span> Minus 1</td>
+                            <td>F=A<span style="text-decoration:overline">B</span></td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A Plus AB</td>
+                            <td>F=A Plus AB Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=A Plus B</td>
+                            <td>F=A Plus B Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus AB</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus AB Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=AB Minus 1</td>
+                            <td>F=AB</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>L</td>
+                            <td>F=A Plus A</td>
+                            <td>F=A Plus A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>H</td>
+                            <td>F=(A+B) Plus A</td>
+                            <td>F=(A+B) Plus A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>L</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus A</td>
+                            <td>F=(A+<span style="text-decoration:overline">B</span>) Plus A Plus 1</td>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>H</td>
+                            <td>F=A Minus 1</td>
+                            <td>F=A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
