@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restoring Division Algorithm Simulator</title>
+    <meta name="description" content="Interactive simulator for Restoring Division algorithm showing step-by-step binary division.">
+    <link rel="stylesheet" href="../Booths-Multiplication/style.css">
+    <style>
+        .page-header { background: rgba(255, 255, 255, 0.25); }
+        .booth-enclosure { width: 700px; height: 600px; left: 150px; top: 100px; }
+        .block-m-reg { top: 30px; left: 200px; width: 300px; }
+        .block-addsub { top: 180px; left: 200px; width: 300px; }
+        .block-a-reg { top: 330px; left: 50px; width: 250px; }
+        .block-q-reg { top: 330px; left: 350px; width: 250px; }
+        .block-shift { top: 480px; left: 200px; width: 300px; }
+        .input-group-label { font-size: 1rem; }
+        .iteration-table th, .iteration-table td { padding: 8px; text-align: center; }
+        .iteration-panel { width: 550px; left: 900px; }
+        .hud { left: 900px; width: 500px; bottom: 50px; }
+        #val-product { font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        RESTORING DIVISION SIMULATOR
+        <button id="toggle-info-btn" class="glass-btn">Algorithm Info</button>
+        <a href="../index.html" class="glass-btn" style="right: 220px; text-decoration: none; color: inherit;">Home</a>
+    </div>
+    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a></div>
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+        <svg viewBox="0 0 24 24" id="theme-icon">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <div class="container">
+        <div class="circuit-wrapper">
+            <div class="booth-enclosure">
+                <div class="block block-m-reg" id="block-m-reg">
+                    <div class="pill-shape">M (Divisor)</div>
+                    <div class="reg-bits" id="m-display">00000</div>
+                </div>
+                <div class="block block-addsub" id="block-addsub">
+                    <div class="pill-shape">Adder / Subtractor</div>
+                    <div class="reg-bits sub-label" id="addsub-op">Idle</div>
+                </div>
+                <div class="block block-a-reg" id="block-a-reg">
+                    <div class="pill-shape">A (Accumulator)</div>
+                    <div class="reg-bits" id="a-display">00000</div>
+                </div>
+                <div class="block block-q-reg" id="block-q-reg">
+                    <div class="pill-shape">Q (Dividend/Quotient)</div>
+                    <div class="reg-bits" id="q-display">0000</div>
+                </div>
+                <div class="block block-shift" id="block-shift">
+                    <div class="pill-shape">Shift Left AQ</div>
+                </div>
+            </div>
+
+            <div class="input-group group-multiplicand">
+                <div class="input-group-label">Divisor (M)</div>
+            </div>
+            <div class="io-node in-m3"><span class="io-label">M3</span>
+                <div class="io-value toggle-btn" data-type="M" data-index="3">0</div>
+            </div>
+            <div class="io-node in-m2"><span class="io-label">M2</span>
+                <div class="io-value toggle-btn" data-type="M" data-index="2">0</div>
+            </div>
+            <div class="io-node in-m1"><span class="io-label">M1</span>
+                <div class="io-value toggle-btn" data-type="M" data-index="1">0</div>
+            </div>
+            <div class="io-node in-m0"><span class="io-label">M0</span>
+                <div class="io-value toggle-btn" data-type="M" data-index="0">0</div>
+            </div>
+
+            <div class="input-group group-multiplier">
+                <div class="input-group-label">Dividend (Q)</div>
+            </div>
+            <div class="io-node in-q3"><span class="io-label">Q3</span>
+                <div class="io-value toggle-btn" data-type="Q" data-index="3">0</div>
+            </div>
+            <div class="io-node in-q2"><span class="io-label">Q2</span>
+                <div class="io-value toggle-btn" data-type="Q" data-index="2">0</div>
+            </div>
+            <div class="io-node in-q1"><span class="io-label">Q1</span>
+                <div class="io-value toggle-btn" data-type="Q" data-index="1">0</div>
+            </div>
+            <div class="io-node in-q0"><span class="io-label">Q0</span>
+                <div class="io-value toggle-btn" data-type="Q" data-index="0">0</div>
+            </div>
+
+            <button id="run-btn" class="run-btn" style="bottom: -50px;">Divide</button>
+        </div>
+
+        <div class="iteration-panel" id="iteration-panel">
+            <div class="panel-title">Restoring Division Iteration Steps</div>
+            <div class="table-scroll">
+                <table class="iteration-table" id="iteration-table">
+                    <thead>
+                        <tr>
+                            <th>N</th>
+                            <th>M</th>
+                            <th>A</th>
+                            <th>Q</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="iteration-tbody">
+                        <tr class="empty-row">
+                            <td colspan="5">Click "Divide" to see iterations</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="result-row" id="result-row">
+                <span>Result:</span>
+                <span id="product-binary">Q: —, A: —</span>
+            </div>
+        </div>
+
+        <div class="hud">
+            <div class="hud-title">Current State</div>
+            <div class="hud-row"><span>M (Divisor):</span> <span id="val-m">0000 (0)</span></div>
+            <div class="hud-row"><span>Q (Dividend):</span> <span id="val-q">0000 (0)</span></div>
+            <div class="hud-row" style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 5px;">
+                <span>Quotient (Q):</span> <span id="val-quotient">0000 (0)</span>
+            </div>
+            <div class="hud-row">
+                <span>Remainder (A):</span> <span id="val-remainder">00000 (0)</span>
+            </div>
+            <div class="equation" id="val-eq">Q ÷ M = 0 R 0</div>
+        </div>
+    </div>
+
+    <div id="info-drawer" class="side-panel">
+        <div class="panel-header">
+            <h2>Algorithm Info</h2>
+            <button id="close-drawer" class="close-btn">&times;</button>
+        </div>
+        <div class="panel-content">
+            <h3 style="margin-top: 0; text-align: center;">Restoring Division Algorithm</h3>
+            <div class="info-section">
+                <p>Restoring division is an algorithm for unsigned binary division.</p>
+                <h4>Steps:</h4>
+                <ol>
+                    <li><strong>Initialize:</strong> A = 0, M = Divisor, Q = Dividend, Count = n.</li>
+                    <li><strong>Shift Left:</strong> Shift AQ left by 1 bit.</li>
+                    <li><strong>Subtract:</strong> A = A - M.</li>
+                    <li><strong>Check Sign:</strong>
+                        <ul>
+                            <li>If A &lt; 0 (Sign bit is 1): Q<sub>0</sub> = 0, and <strong>Restore A</strong> (A = A + M).</li>
+                            <li>If A &ge; 0 (Sign bit is 0): Q<sub>0</sub> = 1.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Decrement Count:</strong> Count = Count - 1. If Count &ne; 0, go to step 2.</li>
+                    <li><strong>Result:</strong> Quotient is in Q, Remainder is in A.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
