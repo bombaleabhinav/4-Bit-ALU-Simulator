@@ -1,33 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restoring Division Algorithm Simulator</title>
-    <meta name="description" content="Interactive simulator for Restoring Division algorithm showing step-by-step binary division.">
+    <meta name="description"
+        content="Interactive simulator for Restoring Division algorithm showing step-by-step binary division.">
     <link rel="stylesheet" href="../Booths-Multiplication/style.css">
     <style>
-        .page-header { background: rgba(255, 255, 255, 0.25); }
-        .booth-enclosure { width: 700px; height: 600px; left: 150px; top: 100px; }
-        .block-m-reg { top: 30px; left: 200px; width: 300px; }
-        .block-addsub { top: 180px; left: 200px; width: 300px; }
-        .block-a-reg { top: 330px; left: 50px; width: 250px; }
-        .block-q-reg { top: 330px; left: 350px; width: 250px; }
-        .block-shift { top: 480px; left: 200px; width: 300px; }
-        .input-group-label { font-size: 1rem; }
-        .iteration-table th, .iteration-table td { padding: 8px; text-align: center; }
-        .iteration-panel { width: 550px; left: 900px; }
-        .hud { left: 900px; width: 500px; bottom: 50px; }
-        #val-product { font-size: 1.1rem; }
+        .page-header {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .booth-enclosure {
+            width: 700px;
+            height: 600px;
+            left: 150px;
+            top: 100px;
+        }
+
+        .block-m-reg {
+            top: 30px;
+            left: 200px;
+            width: 300px;
+        }
+
+        .block-addsub {
+            top: 180px;
+            left: 200px;
+            width: 300px;
+        }
+
+        .block-a-reg {
+            top: 330px;
+            left: 50px;
+            width: 250px;
+        }
+
+        .block-q-reg {
+            top: 330px;
+            left: 350px;
+            width: 250px;
+        }
+
+        .block-shift {
+            top: 480px;
+            left: 200px;
+            width: 300px;
+        }
+
+        .input-group-label {
+            font-size: 1rem;
+        }
+
+        .iteration-table th,
+        .iteration-table td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .iteration-panel {
+            width: 550px;
+            left: 900px;
+        }
+
+        .hud {
+            left: 900px;
+            width: 500px;
+            bottom: 50px;
+        }
+
+        #val-product {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
+
 <body>
     <div class="page-header">
         RESTORING DIVISION SIMULATOR
         <button id="toggle-info-btn" class="glass-btn">Algorithm Info</button>
-        <a href="../index.html" class="glass-btn" style="right: 220px; text-decoration: none; color: inherit;">Home</a>
+        <a href="../index.html" class="glass-btn"
+            style="letter-spacing: normal;right: 220px; text-decoration: none; color: inherit;">Home</a>
     </div>
-    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a></div>
+    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav"
+            target="_blank">Abhinav</a></div>
     <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
         <svg viewBox="0 0 24 24" id="theme-icon">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -149,7 +207,8 @@
                     <li><strong>Subtract:</strong> A = A - M.</li>
                     <li><strong>Check Sign:</strong>
                         <ul>
-                            <li>If A &lt; 0 (Sign bit is 1): Q<sub>0</sub> = 0, and <strong>Restore A</strong> (A = A + M).</li>
+                            <li>If A &lt; 0 (Sign bit is 1): Q<sub>0</sub> = 0, and <strong>Restore A</strong> (A = A +
+                                M).</li>
                             <li>If A &ge; 0 (Sign bit is 0): Q<sub>0</sub> = 1.</li>
                         </ul>
                     </li>
@@ -162,4 +221,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

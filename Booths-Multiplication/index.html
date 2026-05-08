@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booth's Algorithm Multiplier Simulator</title>
-    <meta name="description" content="Interactive simulator for Booth's multiplication algorithm showing step-by-step binary multiplication with circuit diagrams.">
+    <meta name="description"
+        content="Interactive simulator for Booth's multiplication algorithm showing step-by-step binary multiplication with circuit diagrams.">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="page-header">
         BOOTH'S ALGORITHM SIMULATOR
         <button id="toggle-info-btn" class="glass-btn">Algorithm Info</button>
-        <a href="../index.html" class="glass-btn" style="right: 220px; text-decoration: none; color: inherit;">Home</a>
+        <a href="../index.html" class="glass-btn"
+            style="letter-spacing: normal;right: 220px; text-decoration: none; color: inherit;">Home</a>
     </div>
-    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a></div>
+    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav"
+            target="_blank">Abhinav</a></div>
     <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
         <svg viewBox="0 0 24 24" id="theme-icon">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -21,7 +26,7 @@
     </button>
 
     <div class="container">
-                <div class="circuit-wrapper">
+        <div class="circuit-wrapper">
             <svg id="connections">
                 <defs>
                     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
@@ -33,17 +38,17 @@
                     </marker>
                 </defs>
 
-                                <path id="path-m3-in" d="M 100 132 L 200 132" marker-end="url(#arrow)" />
+                <path id="path-m3-in" d="M 100 132 L 200 132" marker-end="url(#arrow)" />
                 <path id="path-m2-in" d="M 100 207 L 155 207 L 155 150 L 200 150" marker-end="url(#arrow)" />
                 <path id="path-m1-in" d="M 100 282 L 145 282 L 145 168 L 200 168" marker-end="url(#arrow)" />
                 <path id="path-m0-in" d="M 100 357 L 135 357 L 135 186 L 200 186" marker-end="url(#arrow)" />
 
-                                <path id="path-q3-in" d="M 100 497 L 135 497 L 135 510 L 200 510" marker-end="url(#arrow)" />
+                <path id="path-q3-in" d="M 100 497 L 135 497 L 135 510 L 200 510" marker-end="url(#arrow)" />
                 <path id="path-q2-in" d="M 100 572 L 145 572 L 145 528 L 200 528" marker-end="url(#arrow)" />
                 <path id="path-q1-in" d="M 100 647 L 155 647 L 155 546 L 200 546" marker-end="url(#arrow)" />
                 <path id="path-q0-in" d="M 100 722 L 165 722 L 165 564 L 200 564" marker-end="url(#arrow)" />
 
-                                <path id="path-out-p7" d="M 700 132 L 860 132" marker-end="url(#arrow)" />
+                <path id="path-out-p7" d="M 700 132 L 860 132" marker-end="url(#arrow)" />
                 <path id="path-out-p6" d="M 700 207 L 860 207" marker-end="url(#arrow)" />
                 <path id="path-out-p5" d="M 700 282 L 860 282" marker-end="url(#arrow)" />
                 <path id="path-out-p4" d="M 700 357 L 860 357" marker-end="url(#arrow)" />
@@ -52,20 +57,20 @@
                 <path id="path-out-p1" d="M 700 582 L 860 582" marker-end="url(#arrow)" />
                 <path id="path-out-p0" d="M 700 657 L 860 657" marker-end="url(#arrow)" />
 
-                                <path id="path-m-to-addsub" d="M 450 175 L 450 200" marker-end="url(#arrow)" />
+                <path id="path-m-to-addsub" d="M 450 175 L 450 200" marker-end="url(#arrow)" />
                 <path id="path-addsub-to-a" d="M 450 275 L 450 300" marker-end="url(#arrow)" class="pulse" />
                 <path id="path-a-to-shift" d="M 450 375 L 450 400" marker-end="url(#arrow)" />
                 <path id="path-shift-to-q" d="M 400 460 L 400 490" marker-end="url(#arrow)" />
                 <path id="path-shift-to-q1" d="M 560 460 L 560 490" marker-end="url(#arrow)" />
                 <path id="path-shift-to-a" d="M 280 430 L 250 430 L 250 337 L 350 337" marker-end="url(#arrow)" />
-                
+
                 <path id="path-q0-to-ctrl" d="M 480 565 L 480 590" marker-end="url(#arrow)" />
                 <path id="path-q1-to-ctrl" d="M 560 565 L 560 590" marker-end="url(#arrow)" />
                 <path id="path-ctrl-to-addsub" d="M 600 620 L 650 620 L 650 237 L 620 237" marker-end="url(#arrow)" />
                 <path id="path-counter-to-ctrl" d="M 360 620 L 380 620" marker-end="url(#arrow)" />
             </svg>
 
-                        <div class="booth-enclosure">
+            <div class="booth-enclosure">
                 <div class="block block-m-reg" id="block-m-reg">
                     <div class="pill-shape">M (Multiplicand)</div>
                     <div class="reg-bits" id="m-display">0000</div>
@@ -99,7 +104,7 @@
                 </div>
             </div>
 
-                        <div class="input-group group-output">
+            <div class="input-group group-output">
                 <div class="input-group-label output-label">Product</div>
             </div>
             <div class="io-node out-p7"><span class="io-label">P7</span>
@@ -127,7 +132,7 @@
                 <div class="io-value output-bit" id="out-p0">0</div>
             </div>
 
-                        <div class="input-group group-multiplicand">
+            <div class="input-group group-multiplicand">
                 <div class="input-group-label">Multiplicand (M)</div>
             </div>
             <div class="io-node in-m3"><span class="io-label">M3</span>
@@ -159,10 +164,10 @@
                 <div class="io-value toggle-btn" data-type="Q" data-index="0">0</div>
             </div>
 
-                        <button id="run-btn" class="run-btn">Multiply</button>
+            <button id="run-btn" class="run-btn">Multiply</button>
         </div>
 
-                <div class="iteration-panel" id="iteration-panel">
+        <div class="iteration-panel" id="iteration-panel">
             <div class="panel-title">Booth's Iteration Steps</div>
             <div class="table-scroll">
                 <table class="iteration-table" id="iteration-table">
@@ -189,7 +194,7 @@
             </div>
         </div>
 
-                <div class="hud">
+        <div class="hud">
             <div class="hud-title">Current State</div>
             <div class="hud-row"><span>M (Multiplicand):</span> <span id="val-m">0000 (0)</span></div>
             <div class="hud-row"><span>Q (Multiplier):</span> <span id="val-q">0000 (0)</span></div>
@@ -200,7 +205,7 @@
         </div>
     </div>
 
-        <div id="info-drawer" class="side-panel">
+    <div id="info-drawer" class="side-panel">
         <div class="panel-header">
             <h2>Algorithm Info</h2>
             <button id="close-drawer" class="close-btn">&times;</button>
@@ -208,10 +213,12 @@
         <div class="panel-content">
             <h3 style="margin-top: 0; text-align: center;">Booth's Multiplication Algorithm</h3>
             <div class="info-section">
-                <p>Booth's algorithm is an efficient method for multiplying two signed binary numbers in two's complement notation.</p>
+                <p>Booth's algorithm is an efficient method for multiplying two signed binary numbers in two's
+                    complement notation.</p>
                 <h4>Steps:</h4>
                 <ol>
-                    <li><strong>Initialize:</strong> Set A = 0, Q = Multiplier, Q<sub>-1</sub> = 0, M = Multiplicand, Count = n (number of bits).</li>
+                    <li><strong>Initialize:</strong> Set A = 0, Q = Multiplier, Q<sub>-1</sub> = 0, M = Multiplicand,
+                        Count = n (number of bits).</li>
                     <li><strong>Check Q<sub>0</sub> and Q<sub>-1</sub>:</strong>
                         <ul>
                             <li><code>Q₀Q₋₁ = 10</code> → A = A − M (Subtract)</li>
@@ -219,7 +226,8 @@
                             <li><code>Q₀Q₋₁ = 00 or 11</code> → No operation</li>
                         </ul>
                     </li>
-                    <li><strong>Arithmetic Right Shift:</strong> Shift [A, Q, Q<sub>-1</sub>] right by 1 bit (preserving sign of A).</li>
+                    <li><strong>Arithmetic Right Shift:</strong> Shift [A, Q, Q<sub>-1</sub>] right by 1 bit (preserving
+                        sign of A).</li>
                     <li><strong>Decrement Count.</strong> If Count ≠ 0, go to step 2.</li>
                     <li><strong>Result:</strong> The product is in [A, Q] (8 bits for 4-bit inputs).</li>
                 </ol>
@@ -234,10 +242,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>0</td><td>0</td><td>No Operation</td></tr>
-                    <tr><td>0</td><td>1</td><td>A = A + M</td></tr>
-                    <tr><td>1</td><td>0</td><td>A = A − M</td></tr>
-                    <tr><td>1</td><td>1</td><td>No Operation</td></tr>
+                    <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>No Operation</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>A = A + M</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>A = A − M</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>No Operation</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -245,4 +269,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

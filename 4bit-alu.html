@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4-Bit ALU Diagram Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="page-header">
         4-BIT ALU SIMULATOR
         <button id="toggle-tables-btn" class="glass-btn">Truth Tables</button>
-        <a href="index.html" class="glass-btn" style="right: 220px; text-decoration: none; color: inherit;">Home</a>
+        <a href="index.html" class="glass-btn"
+            style="letter-spacing: normal;right: 220px; text-decoration: none; color: inherit;">Home</a>
     </div>
-    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a></div>
+    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav"
+            target="_blank">Abhinav</a></div>
     <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
         <svg viewBox="0 0 24 24" id="theme-icon">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -55,15 +59,15 @@
                     marker-start="url(#dot)" />
                 <path id="path-b0-logic" d="M 130 842 L 130 620 L 220 620" marker-end="url(#arrow)"
                     marker-start="url(#dot)" />
-                <path d="M 300 775 L 300 650" marker-end="url(#arrow)" /> 
-                <path d="M 380 775 L 380 650" marker-end="url(#arrow)" /> 
-                <path d="M 460 775 L 460 650" marker-end="url(#arrow)" /> 
-                <path d="M 540 775 L 540 650" marker-end="url(#arrow)" /> 
+                <path d="M 300 775 L 300 650" marker-end="url(#arrow)" />
+                <path d="M 380 775 L 380 650" marker-end="url(#arrow)" />
+                <path d="M 460 775 L 460 650" marker-end="url(#arrow)" />
+                <path d="M 540 775 L 540 650" marker-end="url(#arrow)" />
                 <path id="s3-arith" d="M 300 650 L 300 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
                 <path id="s2-arith" d="M 380 650 L 380 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
                 <path id="s1-arith" d="M 460 650 L 460 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
                 <path id="s0-arith" d="M 540 650 L 540 350" marker-end="url(#arrow)" marker-start="url(#dot)" />
-                <path id="mode-mux-line" d="M 792 65 L 792 150" marker-end="url(#arrow)" /> 
+                <path id="mode-mux-line" d="M 792 65 L 792 150" marker-end="url(#arrow)" />
                 <path d="M 620 210 L 710 210" marker-end="url(#arrow)" id="arith-out-line" />
                 <path d="M 620 510 L 710 510" marker-end="url(#arrow)" id="logic-out-line" />
                 <path d="M 810 400 L 890 400" marker-end="url(#arrow)" id="mux-out-line" />
@@ -153,7 +157,7 @@
                 <span class="io-label">F0</span>
                 <div class="io-value" id="f0">0</div>
             </div>
-        </div> 
+        </div>
         <div class="hud">
             <div class="hud-title">Current State</div>
             <div class="hud-row"><span>A:</span> <span id="val-a">0000 (0)</span></div>
@@ -459,4 +463,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
