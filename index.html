@@ -1,103 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Architecture Simulators</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .menu-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 2px solid rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: var(--glass-shadow);
-            z-index: 10;
-        }
-        body.dark-mode .menu-container {
-            background: var(--box-bg);
-            border-color: var(--main-border);
-        }
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-family: var(--font-main);
-            font-weight: bold;
-            font-size: 1.5rem;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            transition: all 0.2s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            text-decoration: none;
-            color: var(--text-color);
-            width: 400px;
-            text-align: center;
-        }
-        .menu-btn:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: translateY(-2px);
-        }
-        body.dark-mode .menu-btn {
-            background: rgba(30, 35, 45, 0.65);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        body.dark-mode .menu-btn:hover {
-            background: rgba(60, 70, 85, 0.8);
-        }
-    </style>
+    <title>Computer Architecture Simulators — Virtual Lab</title>
+    <meta name="description" content="Interactive virtual laboratory for Computer Organization and Architecture. Explore ALU, Booth's Multiplication, Restoring and Non-Restoring Division algorithms through step-by-step simulators.">
+    <link rel="stylesheet" href="shared.css">
 </head>
+
 <body>
-    <div class="page-header">
-        COMPUTER ARCHITECTURE SIMULATORS
-    </div>
-    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a></div>
-    
-    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
-        <svg viewBox="0 0 24 24" id="theme-icon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <div class="menu-container">
-        <a href="4bit-alu.html" class="menu-btn">4-Bit ALU Simulator</a>
-        <a href="Booths-Multiplication/index.html" class="menu-btn">Booth's Multiplication Simulator</a>
-        <a href="Restoring-Division/index.html" class="menu-btn">Restoring Division Algorithm</a>
-        <a href="Non-Restoring-Division/index.html" class="menu-btn">Non-Restoring Division Algorithm</a>
-    </div>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <svg class="sidebar-logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="4" y="4" width="24" height="24" rx="4" />
+                <path d="M10 16h12M16 10v12" />
+                <circle cx="10" cy="10" r="2" fill="currentColor" />
+                <circle cx="22" cy="22" r="2" fill="currentColor" />
+            </svg>
+            <div class="sidebar-title">CA Virtual Lab</div>
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="index.html" class="active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="4bit-alu.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M12 9v6M9 15h6"/></svg>
+                    ALU Simulator
+                </a>
+            </li>
+            <li>
+                <a href="Booths-Multiplication/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L6 22M18 2L18 22"/><path d="M2 12h20"/><path d="M2 6h20M2 18h20"/></svg>
+                    Booth's Multiplication
+                </a>
+            </li>
+            <li>
+                <a href="Restoring-Division/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><path d="M12 10v10"/><path d="M8 18h8"/></svg>
+                    Restoring Division
+                </a>
+            </li>
+            <li>
+                <a href="Non-Restoring-Division/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><path d="M12 10v10"/><path d="M8 18h8"/><path d="M5 3l14 18"/></svg>
+                    Non-Restoring Division
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-    <script>
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        
-        const moonPath = "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z";
-        const sunPath = "M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z";
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="page-header">
+            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <h1>Computer Architecture Simulators</h1>
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+                <svg viewBox="0 0 24 24" id="theme-icon">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </header>
 
-        function updateThemeIcon(isDark) {
-            themeIcon.innerHTML = `<path d="${isDark ? sunPath : moonPath}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>`;
-        }
+        <div class="landing-content">
+            <div class="landing-grid">
+                <a href="4bit-alu.html" class="landing-card" id="card-alu">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="6" y="6" width="36" height="36" rx="4"/>
+                        <path d="M18 18h12M24 18v12M18 30h12"/>
+                        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                        <circle cx="36" cy="36" r="2" fill="currentColor"/>
+                    </svg>
+                    4-Bit ALU Simulator
+                    <span>Arithmetic &amp; Logic Unit Operations</span>
+                </a>
+                <a href="Booths-Multiplication/index.html" class="landing-card" id="card-booth">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 4v40M36 4v40"/>
+                        <path d="M4 24h40"/>
+                        <path d="M4 12h40M4 36h40"/>
+                    </svg>
+                    Booth's Multiplication
+                    <span>Signed Binary Multiplication Algorithm</span>
+                </a>
+                <a href="Restoring-Division/index.html" class="landing-card" id="card-restoring">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="24" cy="12" r="8"/>
+                        <path d="M24 20v22"/>
+                        <path d="M16 38h16"/>
+                    </svg>
+                    Restoring Division
+                    <span>Binary Division with Restoration</span>
+                </a>
+                <a href="Non-Restoring-Division/index.html" class="landing-card" id="card-nonrestoring">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="24" cy="12" r="8"/>
+                        <path d="M24 20v22"/>
+                        <path d="M16 38h16"/>
+                        <path d="M10 6l28 36"/>
+                    </svg>
+                    Non-Restoring Division
+                    <span>Optimized Division without Restoration</span>
+                </a>
+            </div>
+        </div>
 
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            updateThemeIcon(true);
-        } else {
-            updateThemeIcon(false);
-        }
+        <footer class="page-footer">
+            Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a>
+        </footer>
+    </main>
 
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            updateThemeIcon(isDark);
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-    </script>
+    <script src="shared.js"></script>
 </body>
+
 </html>
