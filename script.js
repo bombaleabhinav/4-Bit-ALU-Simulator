@@ -247,22 +247,32 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
 runSimulation();
 function adjustScale() {
     const container = document.querySelector('.container');
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
+    const viewport = document.querySelector('.sim-viewport');
+    if (!viewport) return;
+
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    
+    // Base target dimensions for the circuit diagram
     const targetWidth = 1450 + 40;
     const targetHeight = 950 + 120;
+    
     const drawer = document.getElementById('truth-table-drawer');
     const isDrawerOpen = drawer && drawer.classList.contains('open');
     const drawerSpace = 450;
+    
     let availableWidth = vw;
     let containerCenter = vw / 2;
+    
     if (isDrawerOpen && vw > 950) {
         availableWidth = vw - drawerSpace;
         containerCenter = availableWidth / 2;
     }
+    
     const scaleX = availableWidth / targetWidth;
     const scaleY = vh / targetHeight;
     const scale = Math.min(scaleX, scaleY);
+    
     container.style.left = containerCenter + 'px';
     container.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
@@ -281,24 +291,4 @@ if (toggleBtn && drawer && closeDrawerBtn) {
         adjustScale();
     });
 }
-const themeToggleBtn = document.getElementById('theme-toggle');
-const themeIcon = document.getElementById('theme-icon');
-const moonPath = "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z";
-const sunPath = "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z";
-if (themeToggleBtn && themeIcon) {
-    const applyTheme = (isDark) => {
-        if (isDark) {
-            document.body.classList.add('dark-mode');
-            themeIcon.innerHTML = `<path d="${sunPath}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
-        } else {
-            document.body.classList.remove('dark-mode');
-            themeIcon.innerHTML = `<path d="${moonPath}"/>`;
-        }
-    };
-    applyTheme(false);
-    themeToggleBtn.addEventListener('click', () => {
-        const isDark = document.body.classList.contains('dark-mode');
-        applyTheme(!isDark);
-        localStorage.setItem('alu-simulator-theme', !isDark ? 'dark' : 'light');
-    });
-}
+// Theme handling is now done via shared.js
