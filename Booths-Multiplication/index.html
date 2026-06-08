@@ -4,269 +4,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booth's Algorithm Multiplier Simulator</title>
-    <meta name="description"
-        content="Interactive simulator for Booth's multiplication algorithm showing step-by-step binary multiplication with circuit diagrams.">
+    <title>Booth's Multiplication Simulator — Computer Architecture Virtual Lab</title>
+    <meta name="description" content="Interactive simulator for Booth's Multiplication algorithm showing step-by-step signed binary multiplication.">
+    <link rel="stylesheet" href="../shared.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="page-header">
-        BOOTH'S ALGORITHM SIMULATOR
-        <button id="toggle-info-btn" class="glass-btn">Algorithm Info</button>
-        <a href="../index.html" class="glass-btn"
-            style="letter-spacing: normal;right: 220px; text-decoration: none; color: inherit;">Home</a>
-    </div>
-    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav"
-            target="_blank">Abhinav</a></div>
-    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
-        <svg viewBox="0 0 24 24" id="theme-icon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <div class="container">
-        <div class="circuit-wrapper">
-            <svg id="connections">
-                <defs>
-                    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
-                        orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" class="arrowhead" />
-                    </marker>
-                    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5">
-                        <circle cx="5" cy="5" r="3" fill="#000" />
-                    </marker>
-                </defs>
-
-                <path id="path-m3-in" d="M 100 132 L 200 132" marker-end="url(#arrow)" />
-                <path id="path-m2-in" d="M 100 207 L 155 207 L 155 150 L 200 150" marker-end="url(#arrow)" />
-                <path id="path-m1-in" d="M 100 282 L 145 282 L 145 168 L 200 168" marker-end="url(#arrow)" />
-                <path id="path-m0-in" d="M 100 357 L 135 357 L 135 186 L 200 186" marker-end="url(#arrow)" />
-
-                <path id="path-q3-in" d="M 100 497 L 135 497 L 135 510 L 200 510" marker-end="url(#arrow)" />
-                <path id="path-q2-in" d="M 100 572 L 145 572 L 145 528 L 200 528" marker-end="url(#arrow)" />
-                <path id="path-q1-in" d="M 100 647 L 155 647 L 155 546 L 200 546" marker-end="url(#arrow)" />
-                <path id="path-q0-in" d="M 100 722 L 165 722 L 165 564 L 200 564" marker-end="url(#arrow)" />
-
-                <path id="path-out-p7" d="M 700 132 L 860 132" marker-end="url(#arrow)" />
-                <path id="path-out-p6" d="M 700 207 L 860 207" marker-end="url(#arrow)" />
-                <path id="path-out-p5" d="M 700 282 L 860 282" marker-end="url(#arrow)" />
-                <path id="path-out-p4" d="M 700 357 L 860 357" marker-end="url(#arrow)" />
-                <path id="path-out-p3" d="M 700 432 L 860 432" marker-end="url(#arrow)" />
-                <path id="path-out-p2" d="M 700 507 L 860 507" marker-end="url(#arrow)" />
-                <path id="path-out-p1" d="M 700 582 L 860 582" marker-end="url(#arrow)" />
-                <path id="path-out-p0" d="M 700 657 L 860 657" marker-end="url(#arrow)" />
-
-                <path id="path-m-to-addsub" d="M 450 175 L 450 200" marker-end="url(#arrow)" />
-                <path id="path-addsub-to-a" d="M 450 275 L 450 300" marker-end="url(#arrow)" class="pulse" />
-                <path id="path-a-to-shift" d="M 450 375 L 450 400" marker-end="url(#arrow)" />
-                <path id="path-shift-to-q" d="M 400 460 L 400 490" marker-end="url(#arrow)" />
-                <path id="path-shift-to-q1" d="M 560 460 L 560 490" marker-end="url(#arrow)" />
-                <path id="path-shift-to-a" d="M 280 430 L 250 430 L 250 337 L 350 337" marker-end="url(#arrow)" />
-
-                <path id="path-q0-to-ctrl" d="M 480 565 L 480 590" marker-end="url(#arrow)" />
-                <path id="path-q1-to-ctrl" d="M 560 565 L 560 590" marker-end="url(#arrow)" />
-                <path id="path-ctrl-to-addsub" d="M 600 620 L 650 620 L 650 237 L 620 237" marker-end="url(#arrow)" />
-                <path id="path-counter-to-ctrl" d="M 360 620 L 380 620" marker-end="url(#arrow)" />
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <svg class="sidebar-logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="4" y="4" width="24" height="24" rx="4" />
+                <path d="M10 16h12M16 10v12" />
+                <circle cx="10" cy="10" r="2" fill="currentColor" />
+                <circle cx="22" cy="22" r="2" fill="currentColor" />
             </svg>
+            <div class="sidebar-title">CA Virtual Lab</div>
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="../index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="../4bit-alu.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M12 9v6M9 15h6"/></svg>
+                    ALU Simulator
+                </a>
+            </li>
+            <li>
+                <a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L6 22M18 2L18 22"/><path d="M2 12h20"/><path d="M2 6h20M2 18h20"/></svg>
+                    Booth's Multiplication
+                </a>
+            </li>
+            <li>
+                <a href="../Restoring-Division/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><path d="M12 10v10"/><path d="M8 18h8"/></svg>
+                    Restoring Division
+                </a>
+            </li>
+            <li>
+                <a href="../Non-Restoring-Division/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><path d="M12 10v10"/><path d="M8 18h8"/><path d="M5 3l14 18"/></svg>
+                    Non-Restoring Division
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-            <div class="booth-enclosure">
-                <div class="block block-m-reg" id="block-m-reg">
-                    <div class="pill-shape">M (Multiplicand)</div>
-                    <div class="reg-bits" id="m-display">0000</div>
-                </div>
-                <div class="block block-addsub" id="block-addsub">
-                    <div class="pill-shape">Adder / Subtractor</div>
-                    <div class="reg-bits sub-label" id="addsub-op">Idle</div>
-                </div>
-                <div class="block block-a-reg" id="block-a-reg">
-                    <div class="pill-shape">A (Accumulator)</div>
-                    <div class="reg-bits" id="a-display">0000</div>
-                </div>
-                <div class="block block-shift" id="block-shift">
-                    <div class="pill-shape">Arithmetic Right Shift</div>
-                </div>
-                <div class="block block-q-reg" id="block-q-reg">
-                    <div class="pill-shape">Q (Multiplier)</div>
-                    <div class="reg-bits" id="q-display">0000</div>
-                </div>
-                <div class="block block-q1" id="block-q1">
-                    <div class="pill-shape">Q<sub>-1</sub></div>
-                    <div class="reg-bits" id="q1-display">0</div>
-                </div>
-                <div class="block block-control" id="block-control">
-                    <div class="pill-shape">Sequence Counter / Control</div>
-                    <div class="reg-bits" id="counter-display">n = 4</div>
-                </div>
-                <div class="block block-counter" id="block-counter">
-                    <div class="pill-shape">Count</div>
-                    <div class="reg-bits" id="count-val">4</div>
-                </div>
-            </div>
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="page-header">
+            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <h1>Booth's Multiplication Simulator</h1>
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+                <svg viewBox="0 0 24 24" id="theme-icon">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </header>
 
-            <div class="input-group group-output">
-                <div class="input-group-label output-label">Product</div>
-            </div>
-            <div class="io-node out-p7"><span class="io-label">P7</span>
-                <div class="io-value output-bit" id="out-p7">0</div>
-            </div>
-            <div class="io-node out-p6"><span class="io-label">P6</span>
-                <div class="io-value output-bit" id="out-p6">0</div>
-            </div>
-            <div class="io-node out-p5"><span class="io-label">P5</span>
-                <div class="io-value output-bit" id="out-p5">0</div>
-            </div>
-            <div class="io-node out-p4"><span class="io-label">P4</span>
-                <div class="io-value output-bit" id="out-p4">0</div>
-            </div>
-            <div class="io-node out-p3"><span class="io-label">P3</span>
-                <div class="io-value output-bit" id="out-p3">0</div>
-            </div>
-            <div class="io-node out-p2"><span class="io-label">P2</span>
-                <div class="io-value output-bit" id="out-p2">0</div>
-            </div>
-            <div class="io-node out-p1"><span class="io-label">P1</span>
-                <div class="io-value output-bit" id="out-p1">0</div>
-            </div>
-            <div class="io-node out-p0"><span class="io-label">P0</span>
-                <div class="io-value output-bit" id="out-p0">0</div>
-            </div>
-
-            <div class="input-group group-multiplicand">
-                <div class="input-group-label">Multiplicand (M)</div>
-            </div>
-            <div class="io-node in-m3"><span class="io-label">M3</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="3">0</div>
-            </div>
-            <div class="io-node in-m2"><span class="io-label">M2</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="2">0</div>
-            </div>
-            <div class="io-node in-m1"><span class="io-label">M1</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="1">0</div>
-            </div>
-            <div class="io-node in-m0"><span class="io-label">M0</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="0">0</div>
-            </div>
-
-            <div class="input-group group-multiplier">
-                <div class="input-group-label">Multiplier (Q)</div>
-            </div>
-            <div class="io-node in-q3"><span class="io-label">Q3</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="3">0</div>
-            </div>
-            <div class="io-node in-q2"><span class="io-label">Q2</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="2">0</div>
-            </div>
-            <div class="io-node in-q1"><span class="io-label">Q1</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="1">0</div>
-            </div>
-            <div class="io-node in-q0"><span class="io-label">Q0</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="0">0</div>
-            </div>
-
-            <button id="run-btn" class="run-btn">Multiply</button>
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="aim">Aim</button>
+            <button class="tab-btn" data-tab="theory">Theory</button>
+            <button class="tab-btn" data-tab="pretest">Pretest</button>
+            <button class="tab-btn" data-tab="procedure">Procedure</button>
+            <button class="tab-btn" data-tab="simulation">Simulation</button>
         </div>
 
-        <div class="iteration-panel" id="iteration-panel">
-            <div class="panel-title">Booth's Iteration Steps</div>
-            <div class="table-scroll">
-                <table class="iteration-table" id="iteration-table">
-                    <thead>
-                        <tr>
-                            <th>A</th>
-                            <th>Q</th>
-                            <th>Q<sub>-1</sub></th>
-                            <th>M</th>
-                            <th>Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody id="iteration-tbody">
-                        <tr class="empty-row">
-                            <td colspan="5">Click "Multiply" to see iterations</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="result-row" id="result-row">
-                <span>Product:</span>
-                <span id="product-binary">—</span>
-                <span id="product-decimal">(—)</span>
+        <!-- ==================== AIM ==================== -->
+        <div class="tab-content active" id="tab-aim">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        Aim
+                    </h2>
+                    <div class="aim-box">
+                        <p>To study and implement <strong>Booth's Multiplication Algorithm</strong> for multiplying two signed binary numbers in two's complement notation. The simulator demonstrates the step-by-step process of addition, subtraction, and arithmetic right shifts based on the multiplier bits.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="hud">
-            <div class="hud-title">Current State</div>
-            <div class="hud-row"><span>M (Multiplicand):</span> <span id="val-m">0000 (0)</span></div>
-            <div class="hud-row"><span>Q (Multiplier):</span> <span id="val-q">0000 (0)</span></div>
-            <div class="hud-row" style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 5px;">
-                <span>Product:</span> <span id="val-product">00000000 (0)</span>
-            </div>
-            <div class="equation" id="val-eq">M × Q = 0</div>
-        </div>
-    </div>
+        <!-- ==================== THEORY ==================== -->
+        <div class="tab-content" id="tab-theory">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        Theory
+                    </h2>
 
-    <div id="info-drawer" class="side-panel">
-        <div class="panel-header">
-            <h2>Algorithm Info</h2>
-            <button id="close-drawer" class="close-btn">&times;</button>
+                    <h3>What is Booth's Algorithm?</h3>
+                    <p>Booth's multiplication algorithm is a multiplication algorithm that multiplies two signed binary numbers in two's complement notation. Invented by Andrew Donald Booth in 1950, it is widely used in computer architecture because it can handle both positive and negative numbers uniformly without requiring a sign-correction step at the end.</p>
+
+                    <h3>How It Works</h3>
+                    <p>The algorithm examines the multiplier bits in overlapping pairs. It looks at the current least significant bit (Q<sub>0</sub>) and the previous least significant bit (Q<sub>-1</sub>, initially 0). Depending on these two bits, an operation is performed on the Accumulator (A).</p>
+
+                    <table class="theory-table">
+                        <thead>
+                            <tr>
+                                <th>Q<sub>0</sub></th>
+                                <th>Q<sub>-1</sub></th>
+                                <th>Action</th>
+                                <th>Reasoning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td>
+                                <td>0</td>
+                                <td><strong>Arithmetic Right Shift (ARS) only</strong></td>
+                                <td>Middle of a string of zeros</td>
+                            </tr>
+                            <tr>
+                                <td>0</td>
+                                <td>1</td>
+                                <td><strong>A = A + M</strong>, then ARS</td>
+                                <td>End of a string of ones</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>0</td>
+                                <td><strong>A = A - M</strong>, then ARS</td>
+                                <td>Beginning of a string of ones</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><strong>Arithmetic Right Shift (ARS) only</strong></td>
+                                <td>Middle of a string of ones</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Registers Used</h3>
+                    <ul>
+                        <li><strong>M (Multiplicand):</strong> Holds the multiplicand value.</li>
+                        <li><strong>Q (Multiplier):</strong> Initially holds the multiplier. During the process, the product's lower half shifts into this register.</li>
+                        <li><strong>A (Accumulator):</strong> Initialized to 0. Holds the upper half of the intermediate product.</li>
+                        <li><strong>Q<sub>-1</sub>:</strong> A single flip-flop initialized to 0, holding the bit shifted out from Q<sub>0</sub>.</li>
+                        <li><strong>Count:</strong> Counter initialized to the number of bits (n).</li>
+                    </ul>
+
+                    <h3>Arithmetic Right Shift (ARS)</h3>
+                    <p>When shifting the A, Q, and Q<sub>-1</sub> registers to the right, the most significant bit (MSB) of A is preserved (duplicated) to maintain the sign of the number. This is crucial for handling negative numbers correctly.</p>
+
+                    <h3>Worked Example: 3 × (-4)</h3>
+                    <p>Let n = 4. M = 3 (0011). Q = -4 (1100). -M = -3 (1101).</p>
+                    <table class="theory-table">
+                        <thead>
+                            <tr>
+                                <th>Step</th>
+                                <th>A</th>
+                                <th>Q</th>
+                                <th>Q<sub>-1</sub></th>
+                                <th>M</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Initial</td>
+                                <td>0000</td>
+                                <td>1100</td>
+                                <td>0</td>
+                                <td>0011</td>
+                                <td>Initialization</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>0000<br>0000</td>
+                                <td>1100<br>0110</td>
+                                <td>0<br>0</td>
+                                <td>0011</td>
+                                <td>Q<sub>0</sub>Q<sub>-1</sub>=00. Shift right.</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>0000<br>0000</td>
+                                <td>0110<br>0011</td>
+                                <td>0<br>0</td>
+                                <td>0011</td>
+                                <td>Q<sub>0</sub>Q<sub>-1</sub>=00. Shift right.</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>1101<br>1110</td>
+                                <td>0011<br>1001</td>
+                                <td>0<br>1</td>
+                                <td>0011</td>
+                                <td>Q<sub>0</sub>Q<sub>-1</sub>=10. A=A-M. Shift right.</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>1110<br>1111</td>
+                                <td>1001<br>0100</td>
+                                <td>1<br>1</td>
+                                <td>0011</td>
+                                <td>Q<sub>0</sub>Q<sub>-1</sub>=11. Shift right.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Final Product = AQ = 11110100. In two's complement, this is -12, which is the correct answer.</p>
+
+                    <h3>Advantages</h3>
+                    <ul>
+                        <li>Works for both positive and negative numbers without modifications.</li>
+                        <li>Can be faster than standard shift-and-add algorithms if there are long runs of 1s or 0s in the multiplier (since it skips addition/subtraction in the middle of a run).</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="panel-content">
-            <h3 style="margin-top: 0; text-align: center;">Booth's Multiplication Algorithm</h3>
-            <div class="info-section">
-                <p>Booth's algorithm is an efficient method for multiplying two signed binary numbers in two's
-                    complement notation.</p>
-                <h4>Steps:</h4>
-                <ol>
-                    <li><strong>Initialize:</strong> Set A = 0, Q = Multiplier, Q<sub>-1</sub> = 0, M = Multiplicand,
-                        Count = n (number of bits).</li>
-                    <li><strong>Check Q<sub>0</sub> and Q<sub>-1</sub>:</strong>
-                        <ul>
-                            <li><code>Q₀Q₋₁ = 10</code> → A = A − M (Subtract)</li>
-                            <li><code>Q₀Q₋₁ = 01</code> → A = A + M (Add)</li>
-                            <li><code>Q₀Q₋₁ = 00 or 11</code> → No operation</li>
+
+        <!-- ==================== PRETEST ==================== -->
+        <div class="tab-content" id="tab-pretest">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Pretest
+                    </h2>
+
+                    <!-- Q1 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 1</div>
+                        <div class="q-text">What is the primary advantage of Booth's Algorithm over basic multiplication algorithms?</div>
+                        <ul class="q-options">
+                            <li>a) It uses fewer registers</li>
+                            <li>b) It handles signed numbers natively without sign correction</li>
+                            <li>c) It always takes exactly 1 clock cycle</li>
+                            <li>d) It only works for positive numbers</li>
                         </ul>
-                    </li>
-                    <li><strong>Arithmetic Right Shift:</strong> Shift [A, Q, Q<sub>-1</sub>] right by 1 bit (preserving
-                        sign of A).</li>
-                    <li><strong>Decrement Count.</strong> If Count ≠ 0, go to step 2.</li>
-                    <li><strong>Result:</strong> The product is in [A, Q] (8 bits for 4-bit inputs).</li>
-                </ol>
-            </div>
-            <h3 style="text-align: center;">Truth Table (Q₀ Q₋₁)</h3>
-            <table class="truth-table">
-                <thead>
-                    <tr>
-                        <th>Q₀</th>
-                        <th>Q₋₁</th>
-                        <th>Operation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>No Operation</td>
-                    </tr>
-                    <tr>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>A = A + M</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>A = A − M</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>No Operation</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: b)</strong> Booth's algorithm natively processes numbers in two's complement form, effectively handling both positive and negative operands correctly.</div>
+                    </div>
 
+                    <!-- Q2 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 2</div>
+                        <div class="q-text">In Booth's algorithm, what action is taken if Q<sub>0</sub> = 1 and Q<sub>-1</sub> = 0?</div>
+                        <ul class="q-options">
+                            <li>a) Arithmetic Right Shift only</li>
+                            <li>b) Add Multiplicand (M) to Accumulator (A), then shift</li>
+                            <li>c) Subtract Multiplicand (M) from Accumulator (A), then shift</li>
+                            <li>d) Halt the operation</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: c)</strong> The pattern 10 marks the beginning of a string of 1s in the multiplier. The algorithm dictates subtracting M from A, followed by an arithmetic right shift.</div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 3</div>
+                        <div class="q-text">What happens during an Arithmetic Right Shift (ARS)?</div>
+                        <ul class="q-options">
+                            <li>a) A 0 is always shifted into the most significant bit.</li>
+                            <li>b) A 1 is always shifted into the most significant bit.</li>
+                            <li>c) The most significant bit is discarded.</li>
+                            <li>d) The sign bit (most significant bit) is preserved (duplicated).</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: d)</strong> ARS preserves the sign of a two's complement number by duplicating the MSB as it shifts right.</div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 4</div>
+                        <div class="q-text">What is the initial value of the Q<sub>-1</sub> bit?</div>
+                        <ul class="q-options">
+                            <li>a) 0</li>
+                            <li>b) 1</li>
+                            <li>c) The MSB of the multiplier</li>
+                            <li>d) The LSB of the multiplicand</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: a)</strong> The algorithm always initializes the Q<sub>-1</sub> flip-flop to 0 before the first iteration.</div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 5</div>
+                        <div class="q-text">How many iterations does Booth's algorithm perform for multiplying two 4-bit numbers?</div>
+                        <ul class="q-options">
+                            <li>a) 3</li>
+                            <li>b) 4</li>
+                            <li>c) 8</li>
+                            <li>d) 16</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: b)</strong> The number of iterations equals the number of bits in the multiplier, which is 4 in this case.</div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 6</div>
+                        <div class="q-text">If the multiplier contains a long string of 1s (e.g., ...011110...), what makes Booth's algorithm efficient?</div>
+                        <ul class="q-options">
+                            <li>a) It turns it into a string of 0s</li>
+                            <li>b) It only performs addition/subtraction at the boundaries of the 1s, and only shifts in the middle</li>
+                            <li>c) It divides by 2</li>
+                            <li>d) It ignores strings of 1s</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: b)</strong> For a pattern like 11, Booth's algorithm only shifts (no add/sub). It performs a subtraction when the 1s start (10) and an addition when they end (01). This requires fewer ALU operations than shift-and-add for every 1.</div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 7</div>
+                        <div class="q-text">In a 4-bit implementation, how many bits wide is the final product?</div>
+                        <ul class="q-options">
+                            <li>a) 4 bits</li>
+                            <li>b) 8 bits</li>
+                            <li>c) 16 bits</li>
+                            <li>d) 5 bits</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: b)</strong> The product of two n-bit numbers requires 2n bits. In a 4-bit simulator, the 8-bit result is stored across the A and Q registers combined (AQ).</div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="pretest-question">
+                        <div class="q-number">Question 8</div>
+                        <div class="q-text">What is the two's complement of -5 in 4 bits?</div>
+                        <ul class="q-options">
+                            <li>a) 0101</li>
+                            <li>b) 1010</li>
+                            <li>c) 1011</li>
+                            <li>d) 1101</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: c)</strong> +5 is 0101. Invert bits: 1010. Add 1: 1011.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PROCEDURE ==================== -->
+        <div class="tab-content" id="tab-procedure">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        Procedure
+                    </h2>
+                    <p>Follow these steps to operate the Booth's Multiplication Simulator:</p>
+
+                    <div class="procedure-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Navigate to the <strong>Simulation</strong> tab to see the Booth multiplier datapath.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text"><strong>Set Multiplicand (M):</strong> Click the bit buttons (M3, M2, M1, M0) to enter the 4-bit signed multiplicand. The decimal equivalent is shown in the HUD. Keep in mind that the leftmost bit (M3) is the sign bit.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text"><strong>Set Multiplier (Q):</strong> Click the bit buttons (Q3, Q2, Q1, Q0) to enter the 4-bit signed multiplier.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text"><strong>Run the Simulation:</strong> Click the "Multiply" button. The simulator will automatically calculate the result.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">5</div>
+                        <div class="step-text"><strong>Observe Iteration Steps:</strong> The Iteration Table on the right will populate with the 4 steps of the algorithm. Watch the values of A, Q, and Q<sub>-1</sub> change.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">6</div>
+                        <div class="step-text"><strong>Follow the Animation:</strong> The circuit diagram will visually highlight the active operation (Add, Subtract, or Shift) for each step in sequence. The active path pulses.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">7</div>
+                        <div class="step-text"><strong>Final Result:</strong> The final 8-bit product is formed by combining the A and Q registers (A3A2A1A0 Q3Q2Q1Q0) after 4 iterations. This is displayed at the bottom right.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SIMULATION ==================== -->
+        <div class="tab-content" id="tab-simulation">
+            <div class="sim-viewport">
+                <div class="container">
+                    <div class="circuit-wrapper">
+                        <div class="booth-enclosure">
+                            <div class="block block-m-reg" id="block-m-reg">
+                                <div class="pill-shape">M (Multiplicand)</div>
+                                <div class="reg-bits" id="m-display">0000</div>
+                            </div>
+                            <div class="block block-addsub" id="block-addsub">
+                                <div class="pill-shape">Adder / Subtractor</div>
+                                <div class="reg-bits sub-label" id="addsub-op">Idle</div>
+                            </div>
+                            <div class="block block-a-reg" id="block-a-reg">
+                                <div class="pill-shape">A (Accumulator)</div>
+                                <div class="reg-bits" id="a-display">0000</div>
+                            </div>
+                            <div class="block block-q-reg" id="block-q-reg">
+                                <div class="pill-shape">Q (Multiplier)</div>
+                                <div class="reg-bits" id="q-display">0000</div>
+                            </div>
+                            <div class="block block-q1-reg" id="block-q1-reg">
+                                <div class="pill-shape">Q<sub>-1</sub></div>
+                                <div class="reg-bits" id="q1-display">0</div>
+                            </div>
+                            <div class="block block-shift" id="block-shift">
+                                <div class="pill-shape">Arithmetic Right Shift</div>
+                            </div>
+                        </div>
+
+                        <div class="input-group group-multiplicand">
+                            <div class="input-group-label">Multiplicand (M)</div>
+                        </div>
+                        <div class="io-node in-m3"><span class="io-label">M3</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="3">0</div>
+                        </div>
+                        <div class="io-node in-m2"><span class="io-label">M2</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="2">0</div>
+                        </div>
+                        <div class="io-node in-m1"><span class="io-label">M1</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="1">0</div>
+                        </div>
+                        <div class="io-node in-m0"><span class="io-label">M0</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="0">0</div>
+                        </div>
+
+                        <div class="input-group group-multiplier">
+                            <div class="input-group-label">Multiplier (Q)</div>
+                        </div>
+                        <div class="io-node in-q3"><span class="io-label">Q3</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="3">0</div>
+                        </div>
+                        <div class="io-node in-q2"><span class="io-label">Q2</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="2">0</div>
+                        </div>
+                        <div class="io-node in-q1"><span class="io-label">Q1</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="1">0</div>
+                        </div>
+                        <div class="io-node in-q0"><span class="io-label">Q0</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="0">0</div>
+                        </div>
+
+                        <button id="run-btn" class="run-btn">Multiply</button>
+                    </div>
+
+                    <div class="iteration-panel" id="iteration-panel">
+                        <div class="panel-title">Booth's Iteration Steps</div>
+                        <div class="table-scroll">
+                            <table class="iteration-table" id="iteration-table">
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>Q</th>
+                                        <th>Q<sub>-1</sub></th>
+                                        <th>M</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="iteration-tbody">
+                                    <tr class="empty-row">
+                                        <td colspan="5">Click "Multiply" to see iterations</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="result-row" id="result-row">
+                            <span>Final Product (AQ):</span>
+                            <span id="product-binary">—</span>
+                        </div>
+                    </div>
+
+                    <div class="hud">
+                        <div class="hud-title">Current State</div>
+                        <div class="hud-row"><span>M (Multiplicand):</span> <span id="val-m">0000 (0)</span></div>
+                        <div class="hud-row"><span>Q (Multiplier):</span> <span id="val-q">0000 (0)</span></div>
+                        <div class="hud-row" style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 5px;">
+                            <span>Product (Decimal):</span> <span id="val-res">0</span>
+                        </div>
+                        <div class="equation" id="val-eq">P = M × Q</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a>
+        </footer>
+    </main>
+
+    <script src="../shared.js"></script>
     <script src="script.js"></script>
 </body>
 
