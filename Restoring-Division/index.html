@@ -4,221 +4,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restoring Division Algorithm Simulator</title>
-    <meta name="description"
-        content="Interactive simulator for Restoring Division algorithm showing step-by-step binary division.">
+    <title>Restoring Division Simulator — Computer Architecture Virtual Lab</title>
+    <meta name="description" content="Interactive simulator for Restoring Division algorithm showing step-by-step binary division.">
+    <link rel="stylesheet" href="../shared.css">
     <link rel="stylesheet" href="../Booths-Multiplication/style.css">
     <style>
-        .page-header {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .booth-enclosure {
-            width: 700px;
-            height: 600px;
-            left: 150px;
-            top: 100px;
-        }
-
-        .block-m-reg {
-            top: 30px;
-            left: 200px;
-            width: 300px;
-        }
-
-        .block-addsub {
-            top: 180px;
-            left: 200px;
-            width: 300px;
-        }
-
-        .block-a-reg {
-            top: 330px;
-            left: 50px;
-            width: 250px;
-        }
-
-        .block-q-reg {
-            top: 330px;
-            left: 350px;
-            width: 250px;
-        }
-
-        .block-shift {
-            top: 480px;
-            left: 200px;
-            width: 300px;
-        }
-
-        .input-group-label {
-            font-size: 1rem;
-        }
-
-        .iteration-table th,
-        .iteration-table td {
-            padding: 8px;
-            text-align: center;
-        }
-
-        .iteration-panel {
-            width: 550px;
-            left: 900px;
-        }
-
-        .hud {
-            left: 900px;
-            width: 500px;
-            bottom: 50px;
-        }
-
-        #val-product {
-            font-size: 1.1rem;
-        }
+        .page-header { background: rgba(255, 255, 255, 0.25); }
+        .booth-enclosure { width: 700px; height: 600px; left: 150px; top: 100px; }
+        .block-m-reg { top: 30px; left: 200px; width: 300px; }
+        .block-addsub { top: 180px; left: 200px; width: 300px; }
+        .block-a-reg { top: 330px; left: 50px; width: 250px; }
+        .block-q-reg { top: 330px; left: 350px; width: 250px; }
+        .block-shift { top: 480px; left: 200px; width: 300px; }
+        .iteration-table th, .iteration-table td { padding: 8px; text-align: center; }
+        .iteration-panel { width: 550px; left: 900px; }
+        .hud { left: 900px; width: 550px; bottom: 50px; }
     </style>
 </head>
 
 <body>
-    <div class="page-header">
-        RESTORING DIVISION SIMULATOR
-        <button id="toggle-info-btn" class="glass-btn">Algorithm Info</button>
-        <a href="../index.html" class="glass-btn"
-            style="letter-spacing: normal;right: 220px; text-decoration: none; color: inherit;">Home</a>
-    </div>
-    <div class="page-footer">Made with &hearts; by <a href="https://github.com/bombaleabhinav"
-            target="_blank">Abhinav</a></div>
-    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
-        <svg viewBox="0 0 24 24" id="theme-icon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <div class="container">
-        <div class="circuit-wrapper">
-            <div class="booth-enclosure">
-                <div class="block block-m-reg" id="block-m-reg">
-                    <div class="pill-shape">M (Divisor)</div>
-                    <div class="reg-bits" id="m-display">00000</div>
-                </div>
-                <div class="block block-addsub" id="block-addsub">
-                    <div class="pill-shape">Adder / Subtractor</div>
-                    <div class="reg-bits sub-label" id="addsub-op">Idle</div>
-                </div>
-                <div class="block block-a-reg" id="block-a-reg">
-                    <div class="pill-shape">A (Accumulator)</div>
-                    <div class="reg-bits" id="a-display">00000</div>
-                </div>
-                <div class="block block-q-reg" id="block-q-reg">
-                    <div class="pill-shape">Q (Dividend/Quotient)</div>
-                    <div class="reg-bits" id="q-display">0000</div>
-                </div>
-                <div class="block block-shift" id="block-shift">
-                    <div class="pill-shape">Shift Left AQ</div>
-                </div>
-            </div>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <svg class="sidebar-logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="4" y="4" width="24" height="24" rx="4" />
+                <path d="M10 16h12M16 10v12" />
+                <circle cx="10" cy="10" r="2" fill="currentColor" />
+                <circle cx="22" cy="22" r="2" fill="currentColor" />
+            </svg>
+            <div class="sidebar-title">CA Virtual Lab</div>
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="../index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="../4bit-alu.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M12 9v6M9 15h6"/></svg>
+                    ALU Simulator
+                </a>
+            </li>
+            <li>
+                <a href="../Booths-Multiplication/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L6 22M18 2L18 22"/><path d="M2 12h20"/><path d="M2 6h20M2 18h20"/></svg>
+                    Booth's Multiplication
+                </a>
+            </li>
+            <li>
+                <a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><path d="M12 10v10"/><path d="M8 18h8"/></svg>
+                    Restoring Division
+                </a>
+            </li>
+            <li>
+                <a href="../Non-Restoring-Division/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><path d="M12 10v10"/><path d="M8 18h8"/><path d="M5 3l14 18"/></svg>
+                    Non-Restoring Division
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-            <div class="input-group group-multiplicand">
-                <div class="input-group-label">Divisor (M)</div>
-            </div>
-            <div class="io-node in-m3"><span class="io-label">M3</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="3">0</div>
-            </div>
-            <div class="io-node in-m2"><span class="io-label">M2</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="2">0</div>
-            </div>
-            <div class="io-node in-m1"><span class="io-label">M1</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="1">0</div>
-            </div>
-            <div class="io-node in-m0"><span class="io-label">M0</span>
-                <div class="io-value toggle-btn" data-type="M" data-index="0">0</div>
-            </div>
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="page-header">
+            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <h1>Restoring Division Simulator</h1>
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+                <svg viewBox="0 0 24 24" id="theme-icon">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </header>
 
-            <div class="input-group group-multiplier">
-                <div class="input-group-label">Dividend (Q)</div>
-            </div>
-            <div class="io-node in-q3"><span class="io-label">Q3</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="3">0</div>
-            </div>
-            <div class="io-node in-q2"><span class="io-label">Q2</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="2">0</div>
-            </div>
-            <div class="io-node in-q1"><span class="io-label">Q1</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="1">0</div>
-            </div>
-            <div class="io-node in-q0"><span class="io-label">Q0</span>
-                <div class="io-value toggle-btn" data-type="Q" data-index="0">0</div>
-            </div>
-
-            <button id="run-btn" class="run-btn" style="bottom: -50px;">Divide</button>
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="aim">Aim</button>
+            <button class="tab-btn" data-tab="theory">Theory</button>
+            <button class="tab-btn" data-tab="pretest">Pretest</button>
+            <button class="tab-btn" data-tab="procedure">Procedure</button>
+            <button class="tab-btn" data-tab="simulation">Simulation</button>
         </div>
 
-        <div class="iteration-panel" id="iteration-panel">
-            <div class="panel-title">Restoring Division Iteration Steps</div>
-            <div class="table-scroll">
-                <table class="iteration-table" id="iteration-table">
-                    <thead>
-                        <tr>
-                            <th>N</th>
-                            <th>M</th>
-                            <th>A</th>
-                            <th>Q</th>
-                            <th>Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody id="iteration-tbody">
-                        <tr class="empty-row">
-                            <td colspan="5">Click "Divide" to see iterations</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="result-row" id="result-row">
-                <span>Result:</span>
-                <span id="product-binary">Q: —, A: —</span>
+        <!-- ==================== AIM ==================== -->
+        <div class="tab-content active" id="tab-aim">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        Aim
+                    </h2>
+                    <div class="aim-box">
+                        <p>To study and simulate the <strong>Restoring Division Algorithm</strong> for unsigned binary integers. The simulator visualizes the repetitive process of left-shifting, subtracting the divisor, and conditionally restoring the partial remainder to calculate both the quotient and the final remainder.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="hud">
-            <div class="hud-title">Current State</div>
-            <div class="hud-row"><span>M (Divisor):</span> <span id="val-m">0000 (0)</span></div>
-            <div class="hud-row"><span>Q (Dividend):</span> <span id="val-q">0000 (0)</span></div>
-            <div class="hud-row" style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 5px;">
-                <span>Quotient (Q):</span> <span id="val-quotient">0000 (0)</span>
-            </div>
-            <div class="hud-row">
-                <span>Remainder (A):</span> <span id="val-remainder">00000 (0)</span>
-            </div>
-            <div class="equation" id="val-eq">Q ÷ M = 0 R 0</div>
-        </div>
-    </div>
+        <!-- ==================== THEORY ==================== -->
+        <div class="tab-content" id="tab-theory">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        Theory
+                    </h2>
 
-    <div id="info-drawer" class="side-panel">
-        <div class="panel-header">
-            <h2>Algorithm Info</h2>
-            <button id="close-drawer" class="close-btn">&times;</button>
+                    <h3>What is Restoring Division?</h3>
+                    <p>Restoring division is an algorithm used in digital logic to divide two unsigned binary numbers. It mimics the traditional "paper-and-pencil" long division method but relies strictly on shifts, subtractions, and additions. It is called "restoring" because if a subtraction results in a negative partial remainder, the algorithm "restores" the previous remainder by adding the divisor back.</p>
+
+                    <h3>Registers Used</h3>
+                    <ul>
+                        <li><strong>M (Divisor):</strong> Holds the divisor (n bits).</li>
+                        <li><strong>Q (Dividend / Quotient):</strong> Initially holds the dividend. During execution, it gradually accumulates the quotient bits.</li>
+                        <li><strong>A (Accumulator / Remainder):</strong> Initially 0. Holds the partial remainder during division and the final remainder at the end.</li>
+                        <li><strong>Count:</strong> Counter initialized to n (the number of bits in Q).</li>
+                    </ul>
+
+                    <h3>The Algorithm Steps</h3>
+                    <p>For an n-bit division, perform the following steps n times:</p>
+                    <ol>
+                        <li><strong>Shift Left AQ:</strong> Shift the combined A and Q registers left by 1 bit.</li>
+                        <li><strong>Subtract:</strong> A = A - M (using two's complement addition: A = A + M' + 1).</li>
+                        <li><strong>Check Sign of A:</strong>
+                            <ul>
+                                <li><strong>If A &lt; 0 (Sign bit is 1):</strong> The subtraction was invalid (we tried to subtract a divisor larger than the current partial remainder). Set the quotient bit <strong>Q<sub>0</sub> = 0</strong>, and <strong>Restore A</strong> by adding M back (A = A + M).</li>
+                                <li><strong>If A &ge; 0 (Sign bit is 0):</strong> The subtraction was valid. Set the quotient bit <strong>Q<sub>0</sub> = 1</strong>. (No restoration needed).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Decrement Count:</strong> Reduce count by 1. If Count > 0, repeat from Step 1.</li>
+                    </ol>
+
+                    <h3>Worked Example: 7 ÷ 3</h3>
+                    <p>Let n = 4. Dividend Q = 7 (0111). Divisor M = 3 (0011). A = 00000.</p>
+                    <table class="theory-table">
+                        <thead>
+                            <tr>
+                                <th>Step</th>
+                                <th>A</th>
+                                <th>Q</th>
+                                <th>M</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Initial</td>
+                                <td>00000</td>
+                                <td>0111</td>
+                                <td>00011</td>
+                                <td>Initialization</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">1</td>
+                                <td>00000</td>
+                                <td>111_</td>
+                                <td>00011</td>
+                                <td>Shift Left AQ</td>
+                            </tr>
+                            <tr>
+                                <td>11101</td>
+                                <td>111_</td>
+                                <td>00011</td>
+                                <td>A = A - M (Result < 0)</td>
+                            </tr>
+                            <tr>
+                                <td>00000</td>
+                                <td>1110</td>
+                                <td>00011</td>
+                                <td>Restore A (A = A + M), Q<sub>0</sub> = 0</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">2</td>
+                                <td>00001</td>
+                                <td>110_</td>
+                                <td>00011</td>
+                                <td>Shift Left AQ</td>
+                            </tr>
+                            <tr>
+                                <td>11110</td>
+                                <td>110_</td>
+                                <td>00011</td>
+                                <td>A = A - M (Result < 0)</td>
+                            </tr>
+                            <tr>
+                                <td>00001</td>
+                                <td>1100</td>
+                                <td>00011</td>
+                                <td>Restore A (A = A + M), Q<sub>0</sub> = 0</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">3</td>
+                                <td>00011</td>
+                                <td>100_</td>
+                                <td>00011</td>
+                                <td>Shift Left AQ</td>
+                            </tr>
+                            <tr>
+                                <td>00000</td>
+                                <td>100_</td>
+                                <td>00011</td>
+                                <td>A = A - M (Result ≥ 0)</td>
+                            </tr>
+                            <tr>
+                                <td>00000</td>
+                                <td>1001</td>
+                                <td>00011</td>
+                                <td>No Restore, Q<sub>0</sub> = 1</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">4</td>
+                                <td>00001</td>
+                                <td>001_</td>
+                                <td>00011</td>
+                                <td>Shift Left AQ</td>
+                            </tr>
+                            <tr>
+                                <td>11110</td>
+                                <td>001_</td>
+                                <td>00011</td>
+                                <td>A = A - M (Result < 0)</td>
+                            </tr>
+                            <tr>
+                                <td>00001</td>
+                                <td>0010</td>
+                                <td>00011</td>
+                                <td>Restore A (A = A + M), Q<sub>0</sub> = 0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Final Result: Quotient (Q) = 0010 (2). Remainder (A) = 00001 (1). 7 ÷ 3 = 2 Remainder 1.</p>
+                </div>
+            </div>
         </div>
-        <div class="panel-content">
-            <h3 style="margin-top: 0; text-align: center;">Restoring Division Algorithm</h3>
-            <div class="info-section">
-                <p>Restoring division is an algorithm for unsigned binary division.</p>
-                <h4>Steps:</h4>
-                <ol>
-                    <li><strong>Initialize:</strong> A = 0, M = Divisor, Q = Dividend, Count = n.</li>
-                    <li><strong>Shift Left:</strong> Shift AQ left by 1 bit.</li>
-                    <li><strong>Subtract:</strong> A = A - M.</li>
-                    <li><strong>Check Sign:</strong>
-                        <ul>
-                            <li>If A &lt; 0 (Sign bit is 1): Q<sub>0</sub> = 0, and <strong>Restore A</strong> (A = A +
-                                M).</li>
-                            <li>If A &ge; 0 (Sign bit is 0): Q<sub>0</sub> = 1.</li>
+
+        <!-- ==================== PRETEST ==================== -->
+        <div class="tab-content" id="tab-pretest">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Pretest
+                    </h2>
+
+                    <div class="pretest-question">
+                        <div class="q-number">Question 1</div>
+                        <div class="q-text">In restoring division, what does it mean to "restore" A?</div>
+                        <ul class="q-options">
+                            <li>a) Setting A to zero</li>
+                            <li>b) Adding the divisor (M) back to A</li>
+                            <li>c) Shifting A to the right</li>
+                            <li>d) Inverting all bits in A</li>
                         </ul>
-                    </li>
-                    <li><strong>Decrement Count:</strong> Count = Count - 1. If Count &ne; 0, go to step 2.</li>
-                    <li><strong>Result:</strong> Quotient is in Q, Remainder is in A.</li>
-                </ol>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: b)</strong> If A - M is negative, we "restore" the previous value of A by doing A + M.</div>
+                    </div>
+
+                    <div class="pretest-question">
+                        <div class="q-number">Question 2</div>
+                        <div class="q-text">When is the restoration step performed?</div>
+                        <ul class="q-options">
+                            <li>a) Only on the last iteration</li>
+                            <li>b) Whenever A >= 0 after subtraction</li>
+                            <li>c) Whenever A < 0 after subtraction</li>
+                            <li>d) Before shifting AQ</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: c)</strong> The restore step (A = A + M) happens when the result of A - M is negative, indicating the divisor is larger than the partial remainder.</div>
+                    </div>
+
+                    <div class="pretest-question">
+                        <div class="q-number">Question 3</div>
+                        <div class="q-text">What determines the value of the quotient bit Q<sub>0</sub> in each iteration?</div>
+                        <ul class="q-options">
+                            <li>a) The sign bit of A after subtraction</li>
+                            <li>b) The LSB of the divisor M</li>
+                            <li>c) Whether the counter is even or odd</li>
+                            <li>d) The sign bit of Q</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: a)</strong> If A < 0 (sign bit is 1), Q<sub>0</sub> is set to 0. If A >= 0 (sign bit is 0), Q<sub>0</sub> is set to 1.</div>
+                    </div>
+
+                    <div class="pretest-question">
+                        <div class="q-number">Question 4</div>
+                        <div class="q-text">What registers hold the final quotient and remainder, respectively?</div>
+                        <ul class="q-options">
+                            <li>a) A holds Quotient, Q holds Remainder</li>
+                            <li>b) Q holds Quotient, M holds Remainder</li>
+                            <li>c) Q holds Quotient, A holds Remainder</li>
+                            <li>d) M holds Quotient, A holds Remainder</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: c)</strong> At the end of the algorithm, the Q register holds the quotient and the A register holds the final remainder.</div>
+                    </div>
+
+                    <div class="pretest-question">
+                        <div class="q-number">Question 5</div>
+                        <div class="q-text">If dividing an n-bit dividend by an n-bit divisor, how many iterations does restoring division take?</div>
+                        <ul class="q-options">
+                            <li>a) n - 1</li>
+                            <li>b) n</li>
+                            <li>c) n + 1</li>
+                            <li>d) 2n</li>
+                        </ul>
+                        <button class="answer-toggle">Show Answer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div class="answer-reveal"><strong>Answer: b)</strong> The cycle of Shift-Subtract-Restore/SetQ is repeated exactly n times.</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
+        <!-- ==================== PROCEDURE ==================== -->
+        <div class="tab-content" id="tab-procedure">
+            <div class="section-content">
+                <div class="section-card">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        Procedure
+                    </h2>
+                    <p>Follow these steps to operate the Restoring Division Simulator:</p>
+
+                    <div class="procedure-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Navigate to the <strong>Simulation</strong> tab to see the restoring division datapath.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text"><strong>Set Divisor (M):</strong> Click the bit buttons (M3–M0) to enter the 4-bit unsigned divisor. Ensure the divisor is not zero.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text"><strong>Set Dividend (Q):</strong> Click the bit buttons (Q3–Q0) to enter the 4-bit unsigned dividend.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text"><strong>Run the Simulation:</strong> Click the "Divide" button. The simulator will automatically calculate the result.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">5</div>
+                        <div class="step-text"><strong>Observe Iteration Steps:</strong> The Iteration Table on the right will populate with the steps: Left Shift, Subtract, and Restore/Set.</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">6</div>
+                        <div class="step-text"><strong>Follow the Animation:</strong> The circuit diagram will visually highlight the active operation. Notice when the Adder/Subtractor turns red (Subtract) versus green (Restore Add).</div>
+                    </div>
+
+                    <div class="procedure-step">
+                        <div class="step-number">7</div>
+                        <div class="step-text"><strong>Final Result:</strong> The final Quotient (in Q) and Remainder (in A) are displayed at the bottom right.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SIMULATION ==================== -->
+        <div class="tab-content" id="tab-simulation">
+            <div class="sim-viewport">
+                <div class="container">
+                    <div class="circuit-wrapper">
+                        <div class="booth-enclosure">
+                            <div class="block block-m-reg" id="block-m-reg">
+                                <div class="pill-shape">M (Divisor)</div>
+                                <div class="reg-bits" id="m-display">00000</div>
+                            </div>
+                            <div class="block block-addsub" id="block-addsub">
+                                <div class="pill-shape">Adder / Subtractor</div>
+                                <div class="reg-bits sub-label" id="addsub-op">Idle</div>
+                            </div>
+                            <div class="block block-a-reg" id="block-a-reg">
+                                <div class="pill-shape">A (Accumulator)</div>
+                                <div class="reg-bits" id="a-display">00000</div>
+                            </div>
+                            <div class="block block-q-reg" id="block-q-reg">
+                                <div class="pill-shape">Q (Dividend/Quotient)</div>
+                                <div class="reg-bits" id="q-display">0000</div>
+                            </div>
+                            <div class="block block-shift" id="block-shift">
+                                <div class="pill-shape">Shift Left AQ</div>
+                            </div>
+                        </div>
+
+                        <div class="input-group group-multiplicand">
+                            <div class="input-group-label">Divisor (M)</div>
+                        </div>
+                        <div class="io-node in-m3"><span class="io-label">M3</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="3">0</div>
+                        </div>
+                        <div class="io-node in-m2"><span class="io-label">M2</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="2">0</div>
+                        </div>
+                        <div class="io-node in-m1"><span class="io-label">M1</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="1">0</div>
+                        </div>
+                        <div class="io-node in-m0"><span class="io-label">M0</span>
+                            <div class="io-value toggle-btn" data-type="M" data-index="0">0</div>
+                        </div>
+
+                        <div class="input-group group-multiplier">
+                            <div class="input-group-label">Dividend (Q)</div>
+                        </div>
+                        <div class="io-node in-q3"><span class="io-label">Q3</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="3">0</div>
+                        </div>
+                        <div class="io-node in-q2"><span class="io-label">Q2</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="2">0</div>
+                        </div>
+                        <div class="io-node in-q1"><span class="io-label">Q1</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="1">0</div>
+                        </div>
+                        <div class="io-node in-q0"><span class="io-label">Q0</span>
+                            <div class="io-value toggle-btn" data-type="Q" data-index="0">0</div>
+                        </div>
+
+                        <button id="run-btn" class="run-btn" style="bottom: -50px;">Divide</button>
+                    </div>
+
+                    <div class="iteration-panel" id="iteration-panel">
+                        <div class="panel-title">Restoring Division Iteration Steps</div>
+                        <div class="table-scroll">
+                            <table class="iteration-table" id="iteration-table">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>M</th>
+                                        <th>A</th>
+                                        <th>Q</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="iteration-tbody">
+                                    <tr class="empty-row">
+                                        <td colspan="5">Click "Divide" to see iterations</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="result-row" id="result-row">
+                            <span>Result:</span>
+                            <span id="product-binary">Q: —, A: —</span>
+                        </div>
+                    </div>
+
+                    <div class="hud">
+                        <div class="hud-title">Current State</div>
+                        <div class="hud-row"><span>M (Divisor):</span> <span id="val-m">0000 (0)</span></div>
+                        <div class="hud-row"><span>Q (Dividend):</span> <span id="val-q">0000 (0)</span></div>
+                        <div class="hud-row" style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 5px;">
+                            <span>Quotient (Q):</span> <span id="val-quotient">0000 (0)</span>
+                        </div>
+                        <div class="hud-row">
+                            <span>Remainder (A):</span> <span id="val-remainder">00000 (0)</span>
+                        </div>
+                        <div class="equation" id="val-eq">Q ÷ M = 0 R 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            Made with &hearts; by <a href="https://github.com/bombaleabhinav" target="_blank">Abhinav</a>
+        </footer>
+    </main>
+
+    <script src="../shared.js"></script>
     <script src="script.js"></script>
 </body>
 
